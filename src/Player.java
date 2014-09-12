@@ -1,6 +1,3 @@
-/**
- * 
- */
 
 /**
  * @author jwettersten
@@ -8,24 +5,24 @@
  */
 public class Player {
 	
-	private String name = "no name";
-	private char type = 'X';
+	private String name;
+	private int mark;
 	
-	public Player(String playerName, char playerType) {
+	public Player(String playerName, int playerType) {
 		this.name = playerName;
-		this.type = playerType;
+		this.mark = playerType;
 	}
 	
 	public String getName() {
 		return this.name;
 	}
 	
-	public char getType() {
-		return this.type;
+	public int getMark() {
+		return this.mark;
 	}
 	
-	public void setType(char newType){
-		this.type = newType;
+	public void setMark(int newType){
+		this.mark = newType;
 	}
 
 }
