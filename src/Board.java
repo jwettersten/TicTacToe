@@ -1,52 +1,37 @@
-/**
- * 
- */
-import java.util.*;
+import java.util.Observable;
+
 /**
  * @author jwettersten
  *
  */
-public class Board {
+public class Board extends Observable {
 
-	private char[][] board;
-	//ArrayList observers = new ArrayList();
+	private int[][] board;
 	
 	public Board() {
-		this.board = new char[3][3];
+		this.board = new int[3][3];
 	}
 	
-	public char[][] getBoard() {
+	public int[][] getBoard() {
 		return board;
 	}
 	
-	public void setPlayerBoardPosition(int row, int column, char playerType) {
-		// test if position is available
+	public void setPlayerBoardPosition(int row, int column, int playerType) {
+		
 		this.board[row][column] = playerType;
+		
+		setChanged();
+		notifyObservers();
 	}
 	
-	public boolean boardPositionAvailable(int row, int column) {
+	public boolean isBoardPositionAvailable(int row, int column) {
 		
-		if (this.board[row][column] == '\u0000') {
+		if (this.board[row][column] == 0) {
 			return true;
 		} else {
 			return false;
 		}
 		
 	}
-	
-	/**
-	public void registerObserver(Observer obs) {
-		observers.add(obs);
-	}
-	**/
-	
-	/**
-	private void notifyObservers() {
-		for (int i = 0; i < observers.size(); i++) {
-			Observer obs = (Observer)observers.get(i);
-			obs.update();
-		}
-	}
-	**/
 	
 }
