@@ -87,7 +87,7 @@ public class Controller {
 	}
 	
 	public boolean hasPlayerWon(Player player) {
-		return board.hasWon(player.getMark());
+		return board.hasPlayerWon(player.getMark());
 	}
 	
 	public void nextMove() {
