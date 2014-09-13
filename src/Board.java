@@ -18,9 +18,23 @@ public class Board extends Observable {
 		return board;
 	}
 	
-	public boolean isBoardPositionAvailable(int row, int column) {
+	public boolean isFull() {
+		boolean returnValue = true;
 		
-		if (this.board[row][column] > 0) {
+		for (int row = 0; row < ROWS; ++row) {
+			for (int col = 0; col < COLUMNS; ++col) {
+				if (board[row][col] == 0) {
+					return false;
+				}
+			}
+		}
+		
+		return returnValue;
+	}
+	
+	public boolean isPositionAvailable(int row, int column) {
+		
+		if (this.isFull() || board[row][column] > 0) {
 			return false;
 		} else {
 			return true;
@@ -28,9 +42,9 @@ public class Board extends Observable {
 		
 	}
 	
-	public void setPlayerBoardPosition(int row, int column, int playerMark) {
+	public void setPlayerPosition(int row, int column, int playerMark) {
 		
-		this.board[row][column] = playerMark;
+		board[row][column] = playerMark;
 		
 		setChanged();
 		notifyObservers();
