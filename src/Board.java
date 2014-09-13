@@ -7,8 +7,8 @@ import java.util.Observable;
 public class Board extends Observable {
 
 	private int[][] board;
-	private static int ROWS = 3;
-	private static int COLUMNS = 3;
+	private static final int ROWS = 3;
+	private static final int COLUMNS = 3;
 	
 	public Board() {
 		this.board = new int[ROWS][COLUMNS];
