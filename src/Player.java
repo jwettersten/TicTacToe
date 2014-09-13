@@ -21,7 +21,7 @@ public class Player {
 		return this.mark;
 	}
 	
-	public void setMark(int newType){
+	public void setMark(int newType) {
 		this.mark = newType;
 	}
 

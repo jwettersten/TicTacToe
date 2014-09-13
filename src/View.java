@@ -22,14 +22,22 @@ public class View implements Observer {
 		displayMessage("Welcome to the game of Tic Tac Toe!");
 		displayGameBoard();
 	}
+   
+	private void displayFormattedIndexValue(int content) {
+		switch (content) {
+			case 0:  System.out.print("   "); break;
+			case 2:  System.out.print(" O "); break;
+			case 1:  System.out.print(" X "); break;
+		}
+	}
 	
 	public void displayGameBoard() {
-      
+	      
 	   for (int row = 0; row < gameBoard.getBoard().length; ++row) {
          
 		   for (int col = 0; col < gameBoard.getBoard().length; ++col) {
 			   
-			   outputValue(gameBoard.getBoard()[row][col]); // print each of the cells
+			   displayFormattedIndexValue(gameBoard.getBoard()[row][col]); // print each of the cells
 	       
 			   if (col != gameBoard.getBoard().length - 1) {
 				   System.out.print("|");   // print vertical partition
@@ -48,15 +56,6 @@ public class View implements Observer {
 	
 	public void displayMessage(String msg) {
 		System.out.println(msg);
-	}
-   
-   	/** Output the value of the index */
-	private void outputValue(int content) {
-		switch (content) {
-			case 0:  System.out.print("   "); break;
-			case 2: System.out.print(" O "); break;
-			case 1:  System.out.print(" X "); break;
-		}
 	}
 	
 	public void update(Observable obs, Object x) {

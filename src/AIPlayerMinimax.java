@@ -3,9 +3,12 @@ import java.util.*;
 /**
  * @author jwettersten
  *
+ * I swapped in this AI example from https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
+ * and modified it slightly to work with the app design
+ * The goal was to design a way to easily swap in and out an AI player engine
  */
 /** AIPlayer using Minimax algorithm */
-public class AIPlayer {
+public class AIPlayerMinimax extends Player{
 	
 	// Name-constants to represent the seeds and cell contents
 	public static final int EMPTY = 0;
@@ -17,8 +20,10 @@ public class AIPlayer {
 	 
 	protected int[][] cells; // the board's ROWS-by-COLS array of Cells
 	
-	public AIPlayer(Board board) {
-
+	public AIPlayerMinimax(Board board) {
+		
+		super("Computer", NOUGHT);
+		
 		cells = board.getBoard();
 	}
 	 

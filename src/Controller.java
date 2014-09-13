@@ -8,11 +8,19 @@ public class Controller {
 	
 	private Board board;
 	private Player human;
-	private AIPlayer computer;
+	private AIPlayerMinimax computer;
 	private View view;
 	private Scanner consoleUserInput = new Scanner(System.in);
 	
 	public Controller(Board board) {
+		
+		/**
+		 * Start the game:
+		 * - Create a new game board + view
+		 * - Create a new player with a unique name provided by the player
+		 * - Prompt player for their next move
+		 */
+		
 		this.board = board;
 		view = new View(this, board);
 		
@@ -21,7 +29,25 @@ public class Controller {
 		nextMove();
 	}
 	
-	
+	public void aiPlayerMove(AIPlayerMinimax player) {
+		
+		boolean isMoveSuccessful = false;  
+		
+		int[] aiRowColumnMove = player.move();
+		
+		do {
+		      
+			int row = aiRowColumnMove[0]; 
+			int column = aiRowColumnMove[1];
+			
+			if (attemptPlayerMove(row, column, player)) {
+				isMoveSuccessful = true;  
+			} else {
+				view.displayMessage("The position (" + (row + 1) + "," + (column + 1) + ") is not available. Try again!");
+			}
+			
+		} while (!isMoveSuccessful);
+	}
 	
 	public void playerMove(Player player) {
 		
@@ -29,7 +55,7 @@ public class Controller {
 		
 		do {
 			
-			System.out.print("Enter the row and column of your next move, e.g. 1 2 (first row [space] second column): ");
+			view.displayMessage("Enter the row and column of your next move, e.g. 1 2 (first row [space] second column): ");
 		      
 			int row = consoleUserInput.nextInt() - 1; 
 			int column = consoleUserInput.nextInt() - 1;
@@ -37,8 +63,9 @@ public class Controller {
 			if (attemptPlayerMove(row, column, player)) {
 				isMoveSuccessful = true;  
 			} else {
-				System.out.println("The position (" + (row + 1) + "," + (column + 1) + ") is not available. Try again!");
+				view.displayMessage("The position (" + (row + 1) + "," + (column + 1) + ") is not available. Try again!");
 			}
+			
 			
 		} while (!isMoveSuccessful);
 	}
@@ -53,36 +80,50 @@ public class Controller {
 			
 			returnValue = true;
 			
-		} else {
-			// board position already occupied
-			this.view.displayMessage("That position is already occupied. Try again.");
-			
-			returnValue = false;
 		}
 		
 		return returnValue;
 		
 	}
 	
+	public boolean hasPlayerWon(Player player) {
+		return board.hasWon(player.getMark());
+	}
+	
 	public void nextMove() {
+		boolean gameNotOver = true;
+		
 		/**
 		 *  Accept and process player moves (row and column) until there is a winner
 		 */
 		do {
 			playerMove(human);
 			
-			// TODO computer move calls AI method...
+			// check score
+			if (hasPlayerWon(human)) {
+				gameNotOver = false;
+				
+				view.displayMessage(human.getName() + " has won!");
+			}
 			
-		} while (true); // repeat until the game is over
+			aiPlayerMove(computer);
+			// check score
+			if (hasPlayerWon(computer)) {
+				gameNotOver = false;
+				
+				view.displayMessage(computer.getName() + " has won!");
+			}
+			
+		} while (gameNotOver); // repeat until the game is over
 	}
 	
 	public void setupPlayers() {
 		// Create player instances
-		System.out.println("What is your name Player X?");
+		view.displayMessage("What is your name Player X?");
 		String newPlayerName = consoleUserInput.next(); 
 		human = new Player(newPlayerName, 1);
-		computer = new AIPlayer(board);
-		System.out.println("Welcome to Tic Tac Toe " + human.getName() + "!");
+		computer = new AIPlayerMinimax(board);
+		view.displayMessage("Welcome to Tic Tac Toe " + human.getName() + "!");
 	}
 	
 }
