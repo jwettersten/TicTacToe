@@ -14,18 +14,16 @@ public class Controller {
 	
 	public Controller(Board board) {
 		
-		/**
-		 * Start the game:
-		 * - Create a new game board + view
-		 * - Create a new player with a unique name provided by the player
-		 * - Prompt player for their next move
-		 */
-		
+		// Start the game!
+		// Create a new game board + view
 		this.board = board;
 		view = new View(this, board);
-		
 		view.create();
+		
+		// Create a new player with a unique name provided by the player
 		setupPlayers();
+		
+		// Prompt player for their next move
 		nextMove();
 	}
 	
