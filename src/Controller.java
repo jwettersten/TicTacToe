@@ -104,6 +104,12 @@ public class Controller {
 				gameNotOver = false;
 				
 				view.displayMessage(human.getName() + " has won!");
+			} else if (computer.evaluate() == 0) {
+				gameNotOver = false;
+				
+				view.displayMessage("It's a tie!");
+				
+				break;
 			}
 			
 			aiPlayerMove(computer);

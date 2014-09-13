@@ -49,6 +49,9 @@ public class AIPlayerMinimax extends Player{
 		if (nextMoves.isEmpty() || depth == 0) {
 			// Gameover or depth reached, evaluate score
 			bestScore = evaluate();
+			
+			System.out.println("Best score is: " + bestScore);
+			
 		} else {
 			for (int[] move : nextMoves) {
 				// Try this move for the current "player"
@@ -103,7 +106,7 @@ public class AIPlayerMinimax extends Player{
 	       @Return +100, +10, +1 for EACH 3-, 2-, 1-in-a-line for computer.
 	               -100, -10, -1 for EACH 3-, 2-, 1-in-a-line for opponent.
 	               0 otherwise   */
-	   private int evaluate() {
+	   public int evaluate() {
 	      int score = 0;
 	      // Evaluate score for each of the 8 lines (3 rows, 3 columns, 2 diagonals)
 	      score += evaluateLine(0, 0, 0, 1, 0, 2);  // row 0
