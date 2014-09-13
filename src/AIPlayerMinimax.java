@@ -4,27 +4,34 @@ import java.util.*;
  * @author jwettersten
  *
  * I swapped in this AI example from https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
- * and modified it slightly to work with the app design
- * The goal was to design a way to easily swap in and out an AI player engine
+ * and modified it slightly to work within my app design. 
+ * This was an intentional design decision so that I can create different AI player algorithms as appropriate. 
+ * I left the content body as is from the original source, with the exception of a couple refactoring decisions:
+ * - Subclassed Player
+ * - Moved Board scoring functions into Board model
+ * - Making member variables private
  */
 /** AIPlayer using Minimax algorithm */
-public class AIPlayerMinimax extends Player{
+public class AIPlayerMinimax extends Player {
+	
+	Board gameBoard;
 	
 	// Name-constants to represent the seeds and cell contents
-	public static final int EMPTY = 0;
-	public static final int CROSS = 1;
-	public static final int NOUGHT = 2;
+	private static final int EMPTY = 0;
+	private static final int CROSS = 1;
+	private static final int NOUGHT = 2;
 	
-	protected int ROWS = 3;  // number of rows
-	protected int COLS = 3;  // number of columns
-	 
-	protected int[][] cells; // the board's ROWS-by-COLS array of Cells
+	private int ROWS = 3;  // number of rows
+	private int COLS = 3;  // number of columns
+	private int[][] cells; // the board's ROWS-by-COLS array of Cells
 	
 	public AIPlayerMinimax(Board board) {
 		
 		super("Computer", NOUGHT);
 		
-		cells = board.getBoard();
+		gameBoard = board;
+		
+		cells = gameBoard.getBoard();
 	}
 	 
 	/** Get next best move for computer. Return int[2] of {row, col} */
@@ -87,7 +94,7 @@ public class AIPlayerMinimax extends Player{
 	      List<int[]> nextMoves = new ArrayList<int[]>(); // allocate List
 	 
 	      // If gameover, i.e., no next move
-	      if (hasWon(NOUGHT) || hasWon(CROSS)) {
+	      if (gameBoard.hasPlayerWon(NOUGHT) || gameBoard.hasPlayerWon(CROSS)) {
 	         return nextMoves;   // return empty list
 	      }
 	 
@@ -172,27 +179,5 @@ public class AIPlayerMinimax extends Player{
 	         }
 	      }
 	      return score;
-	   }
-	 
-	   private int[] winningPatterns = {
-	         0b111000000, 0b000111000, 0b000000111, // rows
-	         0b100100100, 0b010010010, 0b001001001, // cols
-	         0b100010001, 0b001010100               // diagonals
-	   };
-	 
-	   /** Returns true if thePlayer wins */
-	   private boolean hasWon(int thePlayer) {
-	      int pattern = 0b000000000;  // 9-bit pattern for the 9 cells
-	      for (int row = 0; row < ROWS; ++row) {
-	         for (int col = 0; col < COLS; ++col) {
-	            if (cells[row][col] == thePlayer) {
-	               pattern |= (1 << (row * COLS + col));
-	            }
-	         }
-	      }
-	      for (int winningPattern : winningPatterns) {
-	         if ((pattern & winningPattern) == winningPattern) return true;
-	      }
-	      return false;
 	   }
 }
