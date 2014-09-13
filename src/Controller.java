@@ -11,6 +11,7 @@ public class Controller {
 	private AIPlayerMinimax computer;
 	private View view;
 	private Scanner consoleUserInput = new Scanner(System.in);
+	private boolean gameOver = false;
 	
 	public Controller(Board board) {
 		
@@ -24,25 +25,21 @@ public class Controller {
 		setupPlayers();
 		
 		// Prompt player for their next move
-		nextMove();
+		nextPlayerMove();
 	}
 	
 	public void aiPlayerMove(AIPlayerMinimax player) {
 		
-		boolean isMoveSuccessful = false;  
-		
-		int[] aiRowColumnMove = player.move();
+		boolean isMoveSuccessful = true;  
 		
 		do {
-		      
+			
+			int[] aiRowColumnMove = player.move();  
+			
 			int row = aiRowColumnMove[0]; 
 			int column = aiRowColumnMove[1];
 			
-			if (attemptPlayerMove(row, column, player)) {
-				isMoveSuccessful = true;  
-			} else {
-				view.displayMessage("The position (" + (row + 1) + "," + (column + 1) + ") is not available. Try again!");
-			}
+			isMoveSuccessful = attemptMove(player, board, row, column);
 			
 		} while (!isMoveSuccessful);
 	}
@@ -58,67 +55,55 @@ public class Controller {
 			int row = consoleUserInput.nextInt() - 1; 
 			int column = consoleUserInput.nextInt() - 1;
 			
-			if (attemptPlayerMove(row, column, player)) {
-				isMoveSuccessful = true;  
-			} else {
-				view.displayMessage("The position (" + (row + 1) + "," + (column + 1) + ") is not available. Try again!");
-			}
-			
+			isMoveSuccessful = attemptMove(player, board, row, column);
 			
 		} while (!isMoveSuccessful);
 	}
-
-	public boolean attemptPlayerMove(int rowPosition, int colPosition, Player player) {
+	
+	private boolean attemptMove(Player player, Board board, int row, int column) {
 		
 		boolean returnValue = false;
 		
-		if (board.isBoardPositionAvailable(rowPosition, colPosition)) {
-			// set the position at the positionIndex for the player type
-			this.board.setPlayerBoardPosition(rowPosition, colPosition, player.getMark());
+		if (player.attemptToMakeBoardMove(board, row, column)) {
+			returnValue = true;  
+		} else {
 			
-			returnValue = true;
-			
+			view.displayMessage("The position (" + (row + 1) + "," + (column + 1) + ") is not available. Try again!");
 		}
 		
 		return returnValue;
-		
 	}
 	
-	public boolean hasPlayerWon(Player player) {
-		return board.hasPlayerWon(player.getMark());
-	}
-	
-	public void nextMove() {
-		boolean gameNotOver = true;
-		
-		/**
-		 *  Accept and process player moves (row and column) until there is a winner
-		 */
-		do {
-			playerMove(human);
+	public void checkScore(Player player) {
+		if (board.hasPlayerWon(player.getMark())) {
 			
-			// check score
-			if (hasPlayerWon(human)) {
-				gameNotOver = false;
-				
-				view.displayMessage(human.getName() + " has won!");
-			} else if (computer.evaluate() == 0) {
-				gameNotOver = false;
-				
-				view.displayMessage("It's a tie!");
-				
+			view.displayMessage(player.getName() + " has won!");
+			gameOver = true;
+			
+		} else if (board.isFull()) {
+			
+			view.displayMessage("It's a tie!");
+			gameOver = true;
+			
+		} 
+
+	}
+	
+	public void nextPlayerMove() {
+
+		do {
+			
+			playerMove(human);
+			checkScore(human);
+			
+			if (!gameOver) {
+				aiPlayerMove(computer);
+				checkScore(computer);
+			} else {
 				break;
 			}
 			
-			aiPlayerMove(computer);
-			// check score
-			if (hasPlayerWon(computer)) {
-				gameNotOver = false;
-				
-				view.displayMessage(computer.getName() + " has won!");
-			}
-			
-		} while (gameNotOver); // repeat until the game is over
+		} while (!gameOver); // repeat until the game is over
 	}
 	
 	public void setupPlayers() {
