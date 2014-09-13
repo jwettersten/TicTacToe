@@ -29,9 +29,9 @@ public class Player {
 		
 		boolean returnValue = false;
 		
-		if (board.isBoardPositionAvailable(rowPosition, colPosition)) {
+		if (board.isPositionAvailable(rowPosition, colPosition)) {
 
-			board.setPlayerBoardPosition(rowPosition, colPosition, this.mark);
+			board.setPlayerPosition(rowPosition, colPosition, this.mark);
 			
 			returnValue = true;
 			
