@@ -24,5 +24,21 @@ public class Player {
 	public void setMark(int newType) {
 		this.mark = newType;
 	}
+	
+	public boolean attemptToMakeBoardMove(Board board, int rowPosition, int colPosition) {
+		
+		boolean returnValue = false;
+		
+		if (board.isBoardPositionAvailable(rowPosition, colPosition)) {
+
+			board.setPlayerBoardPosition(rowPosition, colPosition, this.mark);
+			
+			returnValue = true;
+			
+		}
+		
+		return returnValue;
+		
+	}
 
 }
