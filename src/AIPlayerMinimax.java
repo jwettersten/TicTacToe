@@ -57,8 +57,6 @@ public class AIPlayerMinimax extends Player {
 			// Gameover or depth reached, evaluate score
 			bestScore = evaluate();
 			
-			System.out.println("Best score is: " + bestScore);
-			
 		} else {
 			for (int[] move : nextMoves) {
 				// Try this move for the current "player"
