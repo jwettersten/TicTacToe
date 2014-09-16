@@ -27,8 +27,8 @@ public class View implements Observer {
 		displayMessage("What is your name Player X?");
 	}
 	
-	public void requestPlayerMove() {
-		displayMessage("Enter the row and column of your next move, e.g. 1 2 (first row [space] second column): ");
+	public void requestPlayerMove(String name) {
+		displayMessage(name + " please enter the row and column of your next move, e.g. 1 2 (first row [space] second column): ");
 	}
 	
 	public void informPlayerMoveIsNotAvailable(String row, String column) {

@@ -14,13 +14,11 @@ public class Controller {
 	private boolean gameNotOver = true;
 	
 	public Controller(Board board) {
-
 		// Create a new game board + view
 		this.board = board;
 		view = new View(this, board);
 		view.create();
 	}
-	
 	
 	public void createHumanPlayerWithName() {
 		view.requestPlayerName();
@@ -33,35 +31,17 @@ public class Controller {
 		computer = new AIPlayerMinimax("Copmuter", board);
 	}
 	
-	public void aiPlayerMove(Player player) {
-		
-		boolean isMoveSuccessful = true;  
-		
-		do {
-			
-			int[] aiRowColumnMove = player.performMove();  
-			
-			int row = aiRowColumnMove[0]; 
-			int column = aiRowColumnMove[1];
-			
-			isMoveSuccessful = attemptMove(player, board, row, column);
-			
-		} while (!isMoveSuccessful);
-	}
-	
 	public void playerMove(Player player) {
 		
 		boolean isMoveSuccessful = false;  
 		
 		do {
 			
-			view.requestPlayerMove();
+			view.requestPlayerMove(player.getName());
 		     
 			int[] result = player.performMove();
-			int row = result[0]; 
-			int column = result[1];
 			
-			isMoveSuccessful = attemptMove(player, board, row, column);
+			isMoveSuccessful = attemptMove(player, board, result[0], result[1]);
 			
 		} while (!isMoveSuccessful);
 	}
@@ -115,7 +95,6 @@ public class Controller {
 			
 		}
 	}
-	
 	
 	
 }
