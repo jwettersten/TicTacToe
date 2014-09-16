@@ -8,10 +8,10 @@ public class Controller {
 	
 	private Board board;
 	private Player human;
-	private AIPlayerMinimax computer;
+	private Player computer;
 	private View view;
 	private Scanner consoleUserInput = new Scanner(System.in);
-	private boolean gameOver = false;
+	private boolean gameNotOver = true;
 	
 	public Controller(Board board) {
 
@@ -25,21 +25,21 @@ public class Controller {
 	public void createHumanPlayerWithName() {
 		view.requestPlayerName();
 		String newPlayerName = consoleUserInput.next(); 
-		human = new Player(newPlayerName, 1);
+		human = new HumanPlayer(newPlayerName, 1);
 		view.welcomePlayerName("Welcome to Tic Tac Toe " + human.getName() + "!");
 	}
 	
 	public void createComputerPlayer() {
-		computer = new AIPlayerMinimax(board);
+		computer = new AIPlayerMinimax("Copmuter", board);
 	}
 	
-	public void aiPlayerMove(AIPlayerMinimax player) {
+	public void aiPlayerMove(Player player) {
 		
 		boolean isMoveSuccessful = true;  
 		
 		do {
 			
-			int[] aiRowColumnMove = player.move();  
+			int[] aiRowColumnMove = player.performMove();  
 			
 			int row = aiRowColumnMove[0]; 
 			int column = aiRowColumnMove[1];
@@ -55,10 +55,11 @@ public class Controller {
 		
 		do {
 			
-			view.displayMessage("Enter the row and column of your next move, e.g. 1 2 (first row [space] second column): ");
-		      
-			int row = consoleUserInput.nextInt() - 1; 
-			int column = consoleUserInput.nextInt() - 1;
+			view.requestPlayerMove();
+		     
+			int[] result = player.performMove();
+			int row = result[0]; 
+			int column = result[1];
 			
 			isMoveSuccessful = attemptMove(player, board, row, column);
 			
@@ -83,12 +84,12 @@ public class Controller {
 		if (board.hasPlayerWon(player.getMark())) {
 			
 			view.displayMessage(player.getName() + " has won!");
-			gameOver = true;
+			gameNotOver = false;
 			
 		} else if (board.isFull()) {
 			
 			view.displayMessage("It's a tie!");
-			gameOver = true;
+			gameNotOver = false;
 			
 		} 
 
@@ -97,24 +98,24 @@ public class Controller {
 	// could the game loop be something like while game not over take next move
 	
 	// Check Fowler Refactoring book on removing efficiency for the sake of design
-	
+	// consider passing in players
 	public void playGame() {
 
-		do {
+		while (gameNotOver) {
 			
 			playerMove(human);
 			// is game over
 			
 			checkScore(human);
 			
-			if (!gameOver) {
+			if (gameNotOver) {
 				aiPlayerMove(computer);
 				checkScore(computer);
 			} else {
 				break;
 			}
 			
-		} while (!gameOver); // repeat until the game is over
+		}
 	}
 	
 	

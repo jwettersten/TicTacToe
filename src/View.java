@@ -23,9 +23,12 @@ public class View implements Observer {
 		displayGameBoard();
 	}
 	
-	// Create more specific viewMessage functions - right now displayMessage is getting too much from the Controller
 	public void requestPlayerName() {
 		displayMessage("What is your name Player X?");
+	}
+	
+	public void requestPlayerMove() {
+		displayMessage("Enter the row and column of your next move, e.g. 1 2 (first row [space] second column): ");
 	}
 	
 	public void welcomePlayerName(String name) {

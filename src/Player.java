@@ -8,6 +8,8 @@ public class Player {
 	private String name;
 	private int mark;
 	
+	MoveBehavior moveBehavior;
+	
 	public Player(String playerName, int playerType) {
 		this.name = playerName;
 		this.mark = playerType;
@@ -26,6 +28,9 @@ public class Player {
 	}
 	
 	// add move() method
+	public int[] performMove() {
+		return moveBehavior.move();
+	}
 	
 	// new abstraction for the player strategy - controller might be doing too much
 	

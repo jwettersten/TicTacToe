@@ -25,13 +25,20 @@ public class AIPlayerMinimax extends Player {
 	private int COLS = 3;  // number of columns
 	private int[][] cells; // the board's ROWS-by-COLS array of Cells
 	
-	public AIPlayerMinimax(Board board) {
+	public AIPlayerMinimax(String playerName, Board board) {
 		
-		super("Computer", NOUGHT);
+		super(playerName, NOUGHT);
 		
 		gameBoard = board;
 		
 		cells = gameBoard.getBoard();
+		
+		moveBehavior = new MoveWithAIMinimax();
+	}
+	
+	public int[] performMove() {
+		//moveBehavior.move();
+		return this.move();
 	}
 	 
 	/** Get next best move for computer. Return int[2] of {row, col} */
