@@ -22,6 +22,15 @@ public class View implements Observer {
 		displayMessage("Welcome to the game of Tic Tac Toe!");
 		displayGameBoard();
 	}
+	
+	// Create more specific viewMessage functions - right now displayMessage is getting too much from the Controller
+	public void requestPlayerName() {
+		displayMessage("What is your name Player X?");
+	}
+	
+	public void welcomePlayerName(String name) {
+		displayMessage("Welcome to Tic Tac Toe " + name + "!");
+	}
    
 	private void displayFormattedIndexValue(int content) {
 		switch (content) {

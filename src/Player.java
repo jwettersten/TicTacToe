@@ -25,6 +25,13 @@ public class Player {
 		this.mark = newType;
 	}
 	
+	// add move() method
+	
+	// new abstraction for the player strategy - controller might be doing too much
+	
+	// Liskov Substitution Principle: subtype should be substitutable - parent konws nothing about it
+	// Controller needs to know which player is being utilized
+	
 	public boolean attemptToMakeBoardMove(Board board, int rowPosition, int colPosition) {
 		
 		boolean returnValue = false;

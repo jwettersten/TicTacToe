@@ -14,18 +14,23 @@ public class Controller {
 	private boolean gameOver = false;
 	
 	public Controller(Board board) {
-		
-		// Start the game!
+
 		// Create a new game board + view
 		this.board = board;
 		view = new View(this, board);
 		view.create();
-		
-		// Create a new player with a unique name provided by the player
-		setupPlayers();
-		
-		// Prompt player for their next move
-		nextPlayerMove();
+	}
+	
+	
+	public void createHumanPlayerWithName() {
+		view.requestPlayerName();
+		String newPlayerName = consoleUserInput.next(); 
+		human = new Player(newPlayerName, 1);
+		view.welcomePlayerName("Welcome to Tic Tac Toe " + human.getName() + "!");
+	}
+	
+	public void createComputerPlayer() {
+		computer = new AIPlayerMinimax(board);
 	}
 	
 	public void aiPlayerMove(AIPlayerMinimax player) {
@@ -89,11 +94,17 @@ public class Controller {
 
 	}
 	
-	public void nextPlayerMove() {
+	// could the game loop be something like while game not over take next move
+	
+	// Check Fowler Refactoring book on removing efficiency for the sake of design
+	
+	public void playGame() {
 
 		do {
 			
 			playerMove(human);
+			// is game over
+			
 			checkScore(human);
 			
 			if (!gameOver) {
@@ -106,13 +117,6 @@ public class Controller {
 		} while (!gameOver); // repeat until the game is over
 	}
 	
-	public void setupPlayers() {
-		// Create player instances
-		view.displayMessage("What is your name Player X?");
-		String newPlayerName = consoleUserInput.next(); 
-		human = new Player(newPlayerName, 1);
-		computer = new AIPlayerMinimax(board);
-		view.displayMessage("Welcome to Tic Tac Toe " + human.getName() + "!");
-	}
+	
 	
 }
