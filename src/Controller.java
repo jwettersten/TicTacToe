@@ -104,12 +104,10 @@ public class Controller {
 		while (gameNotOver) {
 			
 			playerMove(human);
-			// is game over
-			
 			checkScore(human);
 			
 			if (gameNotOver) {
-				aiPlayerMove(computer);
+				playerMove(computer);
 				checkScore(computer);
 			} else {
 				break;
