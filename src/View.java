@@ -31,8 +31,8 @@ public class View implements Observer {
 		displayMessage(name + " please enter the row and column of your next move, e.g. 1 2 (first row [space] second column): ");
 	}
 	
-	public void informPlayerMoveIsNotAvailable(String row, String column) {
-		displayMessage("The position (" + (row + 1) + "," + (column + 1) + ") is not available. Try again!");
+	public void informPlayerMoveIsNotAvailable() {
+		displayMessage("That move is not available. Try again!");
 	}
 	
 	public void displayWinner(String name) {
