@@ -31,33 +31,25 @@ public class Controller {
 		computer = new AIPlayerMinimax("Copmuter", board);
 	}
 	
-	public void playerMove(Player player) {
+	public void attemptMove(Player player) {
 		
-		boolean isMoveSuccessful = false;  
+		boolean moveIsNotSuccessful = true;  
 		
-		do {
+		while (moveIsNotSuccessful) {
 			
 			view.requestPlayerMove(player.getName());
-		     
-			int[] result = player.performMove();
 			
-			isMoveSuccessful = attemptMove(player, board, result[0], result[1]);
-			
-		} while (!isMoveSuccessful);
-	}
-	
-	private boolean attemptMove(Player player, Board board, int row, int column) {
-		
-		boolean returnValue = false;
-		
-		if (player.attemptToMakeBoardMove(board, row, column)) {
-			returnValue = true;  
-		} else {
+			if (player.performMove(board)) {
+				
+				moveIsNotSuccessful = false;  
+				
+			} else {
 
-			view.informPlayerMoveIsNotAvailable(String.valueOf(row + 1), String.valueOf(column + 1));
+				view.informPlayerMoveIsNotAvailable();
+			}
+			
+			
 		}
-		
-		return returnValue;
 	}
 	
 	public void checkScore(Player player) {
@@ -75,25 +67,23 @@ public class Controller {
 
 	}
 	
-	// could the game loop be something like while game not over take next move
-	
-	// Check Fowler Refactoring book on removing efficiency for the sake of design
-	// consider passing in players
-	public void playGame() {
 
+	public void playGame() {
+		Player currentPlayer = human;
 		while (gameNotOver) {
-			
-			playerMove(human);
-			checkScore(human);
-			
-			if (gameNotOver) {
-				playerMove(computer);
-				checkScore(computer);
-			} else {
-				break;
-			}
-			
+			attemptMove(currentPlayer);
+			checkScore(currentPlayer);
+			currentPlayer = swapPlayer(currentPlayer);
 		}
+	}
+
+	private Player swapPlayer(Player currentPlayer) {
+		if (currentPlayer == computer) {
+		  currentPlayer = human;
+		} else {
+		  currentPlayer = computer;
+		}
+		return currentPlayer;
 	}
 	
 	
