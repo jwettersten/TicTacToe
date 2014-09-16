@@ -10,9 +10,10 @@ public class Player {
 	
 	MoveBehavior moveBehavior;
 	
-	public Player(String playerName, int playerType) {
+	public Player(String playerName, int playerType, MoveBehavior behavior) {
 		this.name = playerName;
 		this.mark = playerType;
+		this.moveBehavior = behavior;
 	}
 	
 	public String getName() {
@@ -27,14 +28,16 @@ public class Player {
 		this.mark = newType;
 	}
 	
-	// add move() method
-	public int[] performMove() {
-		return moveBehavior.move();
+
+	public boolean performMove(Board board) {
+		
+		int[] result = moveBehavior.move();
+		
+		return attemptToPlaceMoveOnBoard(board, result[0], result[1]);
+		
 	}
 	
-
-	
-	public boolean attemptToMakeBoardMove(Board board, int rowPosition, int colPosition) {
+	private boolean attemptToPlaceMoveOnBoard(Board board, int rowPosition, int colPosition) {
 		
 		boolean returnValue = false;
 		
