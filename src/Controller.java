@@ -73,8 +73,8 @@ public class Controller {
 		if (player.attemptToMakeBoardMove(board, row, column)) {
 			returnValue = true;  
 		} else {
-			
-			view.displayMessage("The position (" + (row + 1) + "," + (column + 1) + ") is not available. Try again!");
+
+			view.informPlayerMoveIsNotAvailable(String.valueOf(row + 1), String.valueOf(column + 1));
 		}
 		
 		return returnValue;
@@ -83,12 +83,12 @@ public class Controller {
 	public void checkScore(Player player) {
 		if (board.hasPlayerWon(player.getMark())) {
 			
-			view.displayMessage(player.getName() + " has won!");
+			view.displayWinner(player.getName());
 			gameNotOver = false;
 			
 		} else if (board.isFull()) {
 			
-			view.displayMessage("It's a tie!");
+			view.displayTie();
 			gameNotOver = false;
 			
 		} 

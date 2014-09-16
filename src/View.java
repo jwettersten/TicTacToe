@@ -31,6 +31,18 @@ public class View implements Observer {
 		displayMessage("Enter the row and column of your next move, e.g. 1 2 (first row [space] second column): ");
 	}
 	
+	public void informPlayerMoveIsNotAvailable(String row, String column) {
+		displayMessage("The position (" + (row + 1) + "," + (column + 1) + ") is not available. Try again!");
+	}
+	
+	public void displayWinner(String name) {
+		displayMessage(name + " has won!");
+	}
+	
+	public void displayTie() {
+		displayMessage("It's a tie!");
+	}
+	
 	public void welcomePlayerName(String name) {
 		displayMessage("Welcome to Tic Tac Toe " + name + "!");
 	}
@@ -66,7 +78,7 @@ public class View implements Observer {
       System.out.println();
    }
 	
-	public void displayMessage(String msg) {
+	private void displayMessage(String msg) {
 		System.out.println(msg);
 	}
 	
