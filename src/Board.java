@@ -18,6 +18,20 @@ public class Board extends Observable {
 		return board;
 	}
 	
+	public int getCellValueAt(int row, int column) throws IndexOutOfBoundsException {
+		
+		return board[row][column];
+	}
+	
+	public int getNumRows() {
+		return ROWS;
+	}
+	
+	public int getNumColumns() {
+		return COLUMNS;
+	}
+	
+	
 	public boolean isFull() {
 		boolean returnValue = true;
 		
@@ -33,21 +47,24 @@ public class Board extends Observable {
 	}
 	
 	public boolean isPositionAvailable(int row, int column) {
-		
-		if (this.isFull() || board[row][column] > 0) {
+		// create new method checkBounds...
+		if (row >2 && column >2) {
 			return false;
-		} else {
-			return true;
+		} else { 
+			// remove isFull is possible
+			return !(this.isFull() || board[row][column] > 0) ;
 		}
 		
 	}
 	
 	public void setPlayerPosition(int row, int column, int playerMark) {
 		
-		board[row][column] = playerMark;
-		
-		setChanged();
-		notifyObservers();
+		if (row <=2 && column <=2) {
+			board[row][column] = playerMark;
+			
+			setChanged();
+			notifyObservers();
+		}
 	}
 	
 	
