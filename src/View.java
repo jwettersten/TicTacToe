@@ -8,10 +8,8 @@ import java.util.Observer;
 public class View implements Observer {
 	
 	private Board gameBoard;
-	private Controller gameController;
 	
-	public View(Controller controller, Board board) {
-		this.gameController = controller;
+	public View(Board board) {
 		this.gameBoard = board;
 		
 		board.addObserver(this);
@@ -56,14 +54,14 @@ public class View implements Observer {
 	}
 	
 	public void displayGameBoard() {
-	      
-	   for (int row = 0; row < gameBoard.getBoard().length; ++row) {
+	   
+	   for (int row = 0; row < gameBoard.getNumRows(); ++row) {
          
-		   for (int col = 0; col < gameBoard.getBoard().length; ++col) {
+		   for (int column = 0; column < gameBoard.getNumColumns(); ++column) {
 			   
-			   displayFormattedIndexValue(gameBoard.getBoard()[row][col]); // print each of the cells
+			   displayFormattedIndexValue(gameBoard.getCellValueAt(row, column)); // print each of the cells
 	       
-			   if (col != gameBoard.getBoard().length - 1) {
+			   if (column != gameBoard.getNumColumns() - 1) {
 				   System.out.print("|");   // print vertical partition
 			   }
 		   }
