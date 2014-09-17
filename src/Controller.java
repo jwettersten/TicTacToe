@@ -16,7 +16,7 @@ public class Controller {
 	public Controller(Board board) {
 		// Create a new game board + view
 		this.board = board;
-		view = new View(this, board);
+		view = new View(board);
 		view.create();
 	}
 	
