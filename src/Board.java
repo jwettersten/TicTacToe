@@ -46,20 +46,19 @@ public class Board extends Observable {
 		return returnValue;
 	}
 	
-	public boolean isPositionAvailable(int row, int column) {
-		// create new method checkBounds...
-		if (row >2 && column >2) {
-			return false;
-		} else { 
-			// remove isFull is possible
-			return !(this.isFull() || board[row][column] > 0) ;
-		}
+	public boolean positionIsAvailable(int row, int column) {
+
+		return (positionIsWithinBounds(row, column) && board[row][column] == 0);
 		
+	}
+
+	private boolean positionIsWithinBounds(int row, int column) {
+		return row < ROWS && column < COLUMNS;
 	}
 	
 	public void setPlayerPosition(int row, int column, int playerMark) {
 		
-		if (row <=2 && column <=2) {
+		if (row < ROWS && column < COLUMNS) {
 			board[row][column] = playerMark;
 			
 			setChanged();

@@ -32,24 +32,18 @@ public class Player {
 	public boolean performMove(Board board) {
 		
 		int[] result = moveBehavior.move();
+		int row = result[0];
+		int column = result[1];
 		
-		return attemptToPlaceMoveOnBoard(board, result[0], result[1]);
-		
-	}
-	
-	private boolean attemptToPlaceMoveOnBoard(Board board, int rowPosition, int colPosition) {
-		
-		boolean returnValue = false;
-		
-		if (board.isPositionAvailable(rowPosition, colPosition)) {
+		if (board.positionIsAvailable(row, column)) {
 
-			board.setPlayerPosition(rowPosition, colPosition, this.mark);
+			board.setPlayerPosition(row, column, this.mark);
 			
-			returnValue = true;
+			return true;
 			
+		} else {
+			return false;
 		}
-		
-		return returnValue;
 		
 	}
 

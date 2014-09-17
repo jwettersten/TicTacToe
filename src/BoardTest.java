@@ -77,7 +77,7 @@ public class BoardTest {
 		int row = 0;
 		int column = 0;
 
-		assertTrue(board.isPositionAvailable(row, column));
+		assertTrue(board.positionIsAvailable(row, column));
 		
 	}
 	
@@ -89,7 +89,7 @@ public class BoardTest {
 	
 		board.setPlayerPosition(row, column, 2);
 		
-		assertFalse(board.isPositionAvailable(row, column));
+		assertFalse(board.positionIsAvailable(row, column));
 		
 	}
 	
@@ -101,7 +101,7 @@ public class BoardTest {
 	
 		board.setPlayerPosition(row, column, 2);
 		
-		assertFalse(board.isPositionAvailable(row, column));
+		assertFalse(board.positionIsAvailable(row, column));
 		
 	}
 	
