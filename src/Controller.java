@@ -16,21 +16,27 @@ public class Controller {
 	public Controller(Board board) {
 		// Create a new game board + view
 		this.board = board;
-		view = new View(board);
+		view = new ConsoleView(board);
 		view.create();
 	}
 	
 	public void createHumanPlayerWithName() {
 		view.requestPlayerName();
 		String newPlayerName = consoleUserInput.next(); 
-		human = new HumanPlayer(newPlayerName, 1);
+		human = new HumanPlayer(newPlayerName);
+		human.setMark(1);
+
 		view.welcomePlayerName("Welcome to Tic Tac Toe " + human.getName() + "!");
 	}
 	
 	public void createComputerPlayer() {
 		computer = new AIPlayerMinimax("Copmuter", board);
+		computer.setMark(2);
 	}
 	
+	// add tests
+	// test performing several moves - might need to mock Player, using an array of move positions
+	// to test the loop
 	public void attemptMove(Player player) {
 		
 		boolean moveIsNotSuccessful = true;  
@@ -52,6 +58,7 @@ public class Controller {
 		}
 	}
 	
+	// start test here...
 	public void checkScore(Player player) {
 		if (board.hasPlayerWon(player.getMark())) {
 			
@@ -67,7 +74,8 @@ public class Controller {
 
 	}
 	
-
+	// can a test be used to play the entire game
+	// mock out sequence of moves per player as they go back and forth
 	public void playGame() {
 		Player currentPlayer = human;
 		while (gameNotOver) {
