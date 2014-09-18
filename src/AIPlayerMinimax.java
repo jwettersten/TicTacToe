@@ -9,7 +9,7 @@ public class AIPlayerMinimax extends Player {
 	
 	public AIPlayerMinimax(String playerName, Board board) {
 		
-		super(playerName, 2, new MoveWithAIMinimax(board));
+		super(playerName, new MoveWithAIMinimax(board));
 		
 	}
 	 

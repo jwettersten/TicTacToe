@@ -1,9 +1,9 @@
 
 public class HumanPlayer extends Player {
 	
-	public HumanPlayer(String playerName, int playerType) {
+	public HumanPlayer(String playerName) {
 		
-		super(playerName, playerType, new MoveWithRowColumn());
+		super(playerName, new MoveWithRowColumn());
 		
 	}
 	
