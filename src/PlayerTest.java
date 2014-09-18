@@ -6,10 +6,6 @@ import org.junit.Test;
 
 
 public class PlayerTest {
-	
-	// break out static values in separate class - make public
-	private static final int CROSS = 1;
-	private static final int NOUGHT = 2;
 
 	@Before
 	public void setUp() throws Exception {
@@ -58,23 +54,18 @@ public class PlayerTest {
 	@Test
 	public void testPlayerMark() {
 		
-		// setMark() wasn't used - mark was always set in constructor
-		// however, there are fixed valid marks and the constructor cannot fail
-		// want to use setMark to check for valid mark options
 		Player player = new Player("jw", new MoveWithRowColumn());
-		player.setMark(CROSS);
+		player.setMark(Constants.CROSS);
 		
-		assertEquals(CROSS, player.getMark());
+		assertEquals(Constants.CROSS, player.getMark());
 		
 	}
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testPlayerInValidMark() {
 		
 		Player player = new Player("jw", new MoveWithRowColumn());
 		player.setMark(4);
-		
-		assertEquals(0, player.getMark());
 		
 	}
 	
@@ -82,7 +73,7 @@ public class PlayerTest {
 	public void testPlayerValidMark() {
 		
 		Player player = new Player("jw", new MoveWithRowColumn());
-		player.setMark(NOUGHT);
+		player.setMark(Constants.NOUGHT);
 		
 		assertEquals(2, player.getMark());
 		
@@ -106,13 +97,13 @@ public class PlayerTest {
 		
 		MockMoveBehavior behavior = new MockMoveBehavior();
 		Player human = new Player("jw", behavior);
-		human.setMark(NOUGHT);
+		human.setMark(Constants.NOUGHT);
 		
 		// test setting the position
 		assertTrue(human.performMove(gameBoard));
 		
 		// test that the position was actually set
-		assertEquals(NOUGHT, gameBoard.getCellValueAt(behavior.row, behavior.column));
+		assertEquals(Constants.NOUGHT, gameBoard.getCellValueAt(behavior.row, behavior.column));
 	}
 	
 	@Test
@@ -121,7 +112,7 @@ public class PlayerTest {
 		
 		MockMoveBehavior behavior = new MockMoveBehavior();
 		Player human = new Player("jw", behavior);
-		human.setMark(NOUGHT);
+		human.setMark(Constants.NOUGHT);
 		
 		behavior.row = 4;
 		behavior.column = 4;
@@ -137,18 +128,18 @@ public class PlayerTest {
 		
 		MockMoveBehavior behavior = new MockMoveBehavior();
 		Player human = new Player("jw", behavior);
-		human.setMark(NOUGHT);
+		human.setMark(Constants.NOUGHT);
 		
 		behavior.row = 1;
 		behavior.column = 1;
 		
 		// make this row and col unavailable
-		gameBoard.setPlayerPosition(1, 1, CROSS);
+		gameBoard.setPlayerPosition(1, 1, Constants.CROSS);
 		
 		human.performMove(gameBoard);
 		
 		// test that the position was actually set
-		assertEquals(CROSS, gameBoard.getCellValueAt(behavior.row, behavior.column));
+		assertEquals(Constants.CROSS, gameBoard.getCellValueAt(behavior.row, behavior.column));
 	}
 
 }

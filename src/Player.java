@@ -7,15 +7,11 @@ public class Player {
 	
 	private String name;
 	private int mark;
-	private static final int UNASSIGNED = 0;
-	private static final int CROSS = 1;
-	private static final int NOUGHT = 2;
-	
 	MoveBehavior moveBehavior;
 	
 	public Player(String name, MoveBehavior behavior) {
 		this.name = name;
-		this.mark = UNASSIGNED;
+		this.mark = Constants.UNASSIGNED;
 		this.moveBehavior = behavior;
 	}
 	
@@ -26,16 +22,17 @@ public class Player {
 	public int getMark() {
 		return this.mark;
 	}
-	
-	// add throw exception
+
 	public void setMark(int newMark) {
 		if (isValidMark(newMark)) {
 			this.mark = newMark;
+		} else {
+			throw new IllegalArgumentException("Mark is not an allowable value.");
 		}
 	}
 	
 	public boolean isValidMark(int newMark) {
-		return (newMark == CROSS || newMark == NOUGHT);	
+		return (newMark == Constants.CROSS || newMark == Constants.NOUGHT);	
 	}
 
 	public boolean performMove(Board board) {

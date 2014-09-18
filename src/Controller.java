@@ -24,14 +24,14 @@ public class Controller {
 		view.requestPlayerName();
 		String newPlayerName = consoleUserInput.next(); 
 		human = new HumanPlayer(newPlayerName);
-		human.setMark(1);
+		human.setMark(Constants.CROSS);
 
 		view.welcomePlayerName("Welcome to Tic Tac Toe " + human.getName() + "!");
 	}
 	
 	public void createComputerPlayer() {
 		computer = new AIPlayerMinimax("Copmuter", board);
-		computer.setMark(2);
+		computer.setMark(Constants.NOUGHT);
 	}
 	
 	// add tests

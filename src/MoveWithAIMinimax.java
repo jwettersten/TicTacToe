@@ -11,11 +11,6 @@ public class MoveWithAIMinimax implements MoveBehavior {
 	
 	Board gameBoard;
 	
-	// Name-constants to represent the seeds and cell contents
-	private static final int EMPTY = 0;
-	private static final int CROSS = 1;
-	private static final int NOUGHT = 2;
-	
 	private int ROWS = 3;  // number of rows
 	private int COLS = 3;  // number of columns
 	private int[][] cells; // the board's ROWS-by-COLS array of Cells
@@ -28,7 +23,7 @@ public class MoveWithAIMinimax implements MoveBehavior {
 	}
 	
 	public int[] move() {
-		int[] result = minimax(2, NOUGHT); // depth, max turn
+		int[] result = minimax(2, Constants.NOUGHT); // depth, max turn
 		return new int[] {result[1], result[2]};   // row, col
 	}
 	 
@@ -40,7 +35,7 @@ public class MoveWithAIMinimax implements MoveBehavior {
 		List<int[]> nextMoves = generateMoves();
 	 
 		// mySeed is maximizing; while oppSeed is minimizing
-		int bestScore = (player == NOUGHT) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+		int bestScore = (player == Constants.NOUGHT) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 		int currentScore;
 		int bestRow = -1;
 		int bestCol = -1;
@@ -54,8 +49,8 @@ public class MoveWithAIMinimax implements MoveBehavior {
 				// Try this move for the current "player"
 				cells[move[0]][move[1]] = player;
 				
-				if (player == NOUGHT) {  // mySeed (computer) is maximizing player
-					currentScore = minimax(depth - 1, CROSS)[0];
+				if (player == Constants.NOUGHT) {  // mySeed (computer) is maximizing player
+					currentScore = minimax(depth - 1, Constants.CROSS)[0];
 					
 					if (currentScore > bestScore) {
 						bestScore = currentScore;
@@ -63,7 +58,7 @@ public class MoveWithAIMinimax implements MoveBehavior {
 						bestCol = move[1];
 					}
 				} else {  // oppSeed is minimizing player
-					currentScore = minimax(depth - 1, NOUGHT)[0];
+					currentScore = minimax(depth - 1, Constants.NOUGHT)[0];
 					if (currentScore < bestScore) {
 						bestScore = currentScore;
 						bestRow = move[0];
@@ -72,7 +67,7 @@ public class MoveWithAIMinimax implements MoveBehavior {
 				}
 				
 				// Undo move
-				cells[move[0]][move[1]] = EMPTY;
+				cells[move[0]][move[1]] = Constants.UNASSIGNED;
 			}
 		}
 			return new int[] {bestScore, bestRow, bestCol};
@@ -84,14 +79,14 @@ public class MoveWithAIMinimax implements MoveBehavior {
 	      List<int[]> nextMoves = new ArrayList<int[]>(); // allocate List
 	 
 	      // If gameover, i.e., no next move
-	      if (gameBoard.hasPlayerWon(NOUGHT) || gameBoard.hasPlayerWon(CROSS)) {
+	      if (gameBoard.hasPlayerWon(Constants.NOUGHT) || gameBoard.hasPlayerWon(Constants.CROSS)) {
 	         return nextMoves;   // return empty list
 	      }
 	 
 	      // Search for empty cells and add to the List
 	      for (int row = 0; row < ROWS; ++row) {
 	         for (int col = 0; col < COLS; ++col) {
-	            if (cells[row][col] == EMPTY) {
+	            if (cells[row][col] == Constants.UNASSIGNED) {
 	               nextMoves.add(new int[] {row, col});
 	            }
 	         }
@@ -125,14 +120,14 @@ public class MoveWithAIMinimax implements MoveBehavior {
 	      int score = 0;
 	 
 	      // First cell
-	      if (cells[row1][col1] == NOUGHT) {
+	      if (cells[row1][col1] == Constants.NOUGHT) {
 	         score = 1;
-	      } else if (cells[row1][col1] == CROSS) {
+	      } else if (cells[row1][col1] == Constants.CROSS) {
 	         score = -1;
 	      }
 	 
 	      // Second cell
-	      if (cells[row2][col2] == NOUGHT) {
+	      if (cells[row2][col2] == Constants.NOUGHT) {
 	         if (score == 1) {   // cell1 is mySeed
 	            score = 10;
 	         } else if (score == -1) {  // cell1 is oppSeed
@@ -140,7 +135,7 @@ public class MoveWithAIMinimax implements MoveBehavior {
 	         } else {  // cell1 is empty
 	            score = 1;
 	         }
-	      } else if (cells[row2][col2] == CROSS) {
+	      } else if (cells[row2][col2] == Constants.CROSS) {
 	         if (score == -1) { // cell1 is oppSeed
 	            score = -10;
 	         } else if (score == 1) { // cell1 is mySeed
@@ -151,7 +146,7 @@ public class MoveWithAIMinimax implements MoveBehavior {
 	      }
 	 
 	      // Third cell
-	      if (cells[row3][col3] == NOUGHT) {
+	      if (cells[row3][col3] == Constants.NOUGHT) {
 	         if (score > 0) {  // cell1 and/or cell2 is mySeed
 	            score *= 10;
 	         } else if (score < 0) {  // cell1 and/or cell2 is oppSeed
@@ -159,7 +154,7 @@ public class MoveWithAIMinimax implements MoveBehavior {
 	         } else {  // cell1 and cell2 are empty
 	            score = 1;
 	         }
-	      } else if (cells[row3][col3] == CROSS) {
+	      } else if (cells[row3][col3] == Constants.CROSS) {
 	         if (score < 0) {  // cell1 and/or cell2 is oppSeed
 	            score *= 10;
 	         } else if (score > 1) {  // cell1 and/or cell2 is mySeed

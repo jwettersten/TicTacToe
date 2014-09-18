@@ -13,7 +13,6 @@ public class ConsoleView implements Observer, View {
 		this.gameBoard = board;
 		
 		board.addObserver(this);
-
 	}
 	
 	@Override
@@ -54,15 +53,12 @@ public class ConsoleView implements Observer, View {
    
 	private void displayFormattedIndexValue(int content) {
 		switch (content) {
-			case 0:  System.out.print("   "); break;
-			case 2:  System.out.print(" O "); break;
-			case 1:  System.out.print(" X "); break;
+			case Constants.UNASSIGNED:  System.out.print("   "); break;
+			case Constants.CROSS:  		System.out.print(" X "); break;
+			case Constants.NOUGHT:  	System.out.print(" O "); break;
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see View#displayGameBoard()
-	 */
 	@Override
 	public void displayGameBoard() {
 	   
