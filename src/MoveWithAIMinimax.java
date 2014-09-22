@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author jwettersten
  * I swapped in this AI example from https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaGame_TicTacToe_AI.html
  * and modified it slightly to work within my app design. 
  * This was an intentional design decision so that I can create different AI player algorithms as appropriate. 

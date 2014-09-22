@@ -1,17 +1,14 @@
-
-/**
- * @author jwettersten
- *
- */
 public class Player {
 	
 	private String name;
 	private int mark;
 	MoveBehavior moveBehavior;
+	Board gameBoard;
 	
-	public Player(String name, MoveBehavior behavior) {
+	public Player(String name, Board board, MoveBehavior behavior) {
 		this.name = name;
 		this.mark = Constants.UNASSIGNED;
+		gameBoard = board;
 		this.moveBehavior = behavior;
 	}
 	
@@ -35,15 +32,15 @@ public class Player {
 		return (newMark == Constants.CROSS || newMark == Constants.NOUGHT);	
 	}
 
-	public boolean performMove(Board board) {
+	public boolean performMove() {
 		
 		int[] result = moveBehavior.move();
 		int row = result[0];
 		int column = result[1];
 		
-		if (board.positionIsAvailable(row, column)) {
+		if (gameBoard.positionIsAvailable(row, column)) {
 
-			board.setPlayerPosition(row, column, this.mark);
+			gameBoard.setPlayerPosition(row, column, this.mark);
 			
 			return true;
 		} 

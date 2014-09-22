@@ -1,42 +1,30 @@
-import java.util.Scanner;
-
-/**
- * @author jwettersten
- *
- */
 public class Controller {
 	
 	private Board board;
 	private Player human;
 	private Player computer;
 	private View view;
-	private Scanner consoleUserInput = new Scanner(System.in);
+	
 	private boolean gameNotOver = true;
 	
 	public Controller(Board board) {
-		// Create a new game board + view
+
 		this.board = board;
-		view = new ConsoleView(board);
+	}
+	
+	public void setupPreferredView(View preferredView) {
+		view = preferredView;
 		view.create();
 	}
 	
-	public void createHumanPlayerWithName() {
-		view.requestPlayerName();
-		String newPlayerName = consoleUserInput.next(); 
-		human = new HumanPlayer(newPlayerName);
-		human.setMark(Constants.CROSS);
-
-		view.welcomePlayerName("Welcome to Tic Tac Toe " + human.getName() + "!");
+	public void setHumanPlayer(Player newHumanPlayer) {
+		human = newHumanPlayer;
 	}
 	
-	public void createComputerPlayer() {
-		computer = new AIPlayerMinimax("Copmuter", board);
-		computer.setMark(Constants.NOUGHT);
+	public void setComputerPlayer(Player newComputerPlayer) {
+		computer = newComputerPlayer;
 	}
 	
-	// add tests
-	// test performing several moves - might need to mock Player, using an array of move positions
-	// to test the loop
 	public void attemptMove(Player player) {
 		
 		boolean moveIsNotSuccessful = true;  
@@ -45,7 +33,7 @@ public class Controller {
 			
 			view.requestPlayerMove(player.getName());
 			
-			if (player.performMove(board)) {
+			if (player.performMove()) {
 				
 				moveIsNotSuccessful = false;  
 				
@@ -53,25 +41,26 @@ public class Controller {
 
 				view.informPlayerMoveIsNotAvailable();
 			}
-			
-			
 		}
 	}
 	
-	// start test here...
 	public void checkScore(Player player) {
 		if (board.hasPlayerWon(player.getMark())) {
 			
 			view.displayWinner(player.getName());
-			gameNotOver = false;
+			endGame();
 			
 		} else if (board.isFull()) {
 			
 			view.displayTie();
-			gameNotOver = false;
+			endGame();
 			
 		} 
 
+	}
+
+	private void endGame() {
+		gameNotOver = false;
 	}
 	
 	// can a test be used to play the entire game

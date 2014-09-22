@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class BoardTest {
 	
 	Board board;
@@ -40,7 +39,7 @@ public class BoardTest {
 		
 		for (int row = 0; row < 3; ++row) {
 			for (int col = 0; col < 3; ++col) {
-				board.setPlayerPosition(row, col, 1);
+				board.setPlayerPosition(row, col, Constants.CROSS);
 			}
 		}
 		
@@ -53,7 +52,7 @@ public class BoardTest {
 		int row = 0;
 		int column = 0;
 	
-		board.setPlayerPosition(row, column, 1);
+		board.setPlayerPosition(row, column, Constants.CROSS);
 		
 		assertEquals(1, board.getCellValueAt(row, column));
 		
@@ -65,7 +64,7 @@ public class BoardTest {
 		int row = 0;
 		int column = 0;
 	
-		board.setPlayerPosition(row, column, 2);
+		board.setPlayerPosition(row, column, Constants.NOUGHT);
 		
 		assertEquals(2, board.getCellValueAt(row, column));
 		
@@ -87,7 +86,7 @@ public class BoardTest {
 		int row = 0;
 		int column = 0;
 	
-		board.setPlayerPosition(row, column, 2);
+		board.setPlayerPosition(row, column, Constants.NOUGHT);
 		
 		assertFalse(board.positionIsAvailable(row, column));
 		
@@ -99,7 +98,7 @@ public class BoardTest {
 		int row = 3;
 		int column = 3;
 	
-		board.setPlayerPosition(row, column, 2);
+		board.setPlayerPosition(row, column, Constants.NOUGHT);
 		
 		assertFalse(board.positionIsAvailable(row, column));
 		

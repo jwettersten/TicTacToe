@@ -1,9 +1,5 @@
 import java.util.Observable;
 
-/**
- * @author jwettersten
- *
- */
 public class Board extends Observable {
 
 	private int[][] board;

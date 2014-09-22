@@ -4,11 +4,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class PlayerTest {
+	
+	private Board gameBoard;
 
 	@Before
 	public void setUp() throws Exception {
+		gameBoard = new Board();
 	}
 
 	@After
@@ -18,14 +20,14 @@ public class PlayerTest {
 	@Test
 	public void testPlayer() {
 		
-		assertNotNull(new Player("jw", new MoveWithRowColumn()));
+		assertNotNull(new Player("jw", gameBoard, new MoveWithRowColumn()));
 		
 	}
 	
 	@Test
 	public void testCreateHumanPlayerType() {
 		
-		Player human = new HumanPlayer("jw");
+		Player human = new HumanPlayer("jw", gameBoard);
 		
 		assertEquals("HumanPlayer", human.getClass().getName());
 		
@@ -45,7 +47,7 @@ public class PlayerTest {
 	@Test
 	public void testPlayerName() {
 		
-		Player player = new Player("jw", new MoveWithRowColumn());
+		Player player = new Player("jw", gameBoard, new MoveWithRowColumn());
 		
 		assertEquals("jw", player.getName());
 		
@@ -54,7 +56,7 @@ public class PlayerTest {
 	@Test
 	public void testPlayerMark() {
 		
-		Player player = new Player("jw", new MoveWithRowColumn());
+		Player player = new Player("jw", gameBoard, new MoveWithRowColumn());
 		player.setMark(Constants.CROSS);
 		
 		assertEquals(Constants.CROSS, player.getMark());
@@ -64,7 +66,7 @@ public class PlayerTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testPlayerInValidMark() {
 		
-		Player player = new Player("jw", new MoveWithRowColumn());
+		Player player = new Player("jw", gameBoard, new MoveWithRowColumn());
 		player.setMark(4);
 		
 	}
@@ -72,23 +74,11 @@ public class PlayerTest {
 	@Test
 	public void testPlayerValidMark() {
 		
-		Player player = new Player("jw", new MoveWithRowColumn());
+		Player player = new Player("jw", gameBoard, new MoveWithRowColumn());
 		player.setMark(Constants.NOUGHT);
 		
 		assertEquals(2, player.getMark());
 		
-	}
-	
-	class MockMoveBehavior implements MoveBehavior{
-
-		public int row = 0;
-		public int column = 0;
-		
-		@Override
-		public int[] move() {
-			return new int[] {row, column};
-		}
-	
 	}
 	
 	@Test
@@ -96,11 +86,11 @@ public class PlayerTest {
 		Board gameBoard = new Board();
 		
 		MockMoveBehavior behavior = new MockMoveBehavior();
-		Player human = new Player("jw", behavior);
+		Player human = new Player("jw", gameBoard, behavior);
 		human.setMark(Constants.NOUGHT);
 		
 		// test setting the position
-		assertTrue(human.performMove(gameBoard));
+		assertTrue(human.performMove());
 		
 		// test that the position was actually set
 		assertEquals(Constants.NOUGHT, gameBoard.getCellValueAt(behavior.row, behavior.column));
@@ -111,14 +101,14 @@ public class PlayerTest {
 		Board gameBoard = new Board();
 		
 		MockMoveBehavior behavior = new MockMoveBehavior();
-		Player human = new Player("jw", behavior);
+		Player human = new Player("jw", gameBoard, behavior);
 		human.setMark(Constants.NOUGHT);
 		
 		behavior.row = 4;
 		behavior.column = 4;
 
 		// test setting the position
-		assertFalse(human.performMove(gameBoard));
+		assertFalse(human.performMove());
 	
 	}
 	
@@ -127,7 +117,7 @@ public class PlayerTest {
 		Board gameBoard = new Board();
 		
 		MockMoveBehavior behavior = new MockMoveBehavior();
-		Player human = new Player("jw", behavior);
+		Player human = new Player("jw", gameBoard, behavior);
 		human.setMark(Constants.NOUGHT);
 		
 		behavior.row = 1;
@@ -136,7 +126,7 @@ public class PlayerTest {
 		// make this row and col unavailable
 		gameBoard.setPlayerPosition(1, 1, Constants.CROSS);
 		
-		human.performMove(gameBoard);
+		human.performMove();
 		
 		// test that the position was actually set
 		assertEquals(Constants.CROSS, gameBoard.getCellValueAt(behavior.row, behavior.column));

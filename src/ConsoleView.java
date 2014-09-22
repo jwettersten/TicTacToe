@@ -1,10 +1,6 @@
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- * @author jwettersten
- *
- */
 public class ConsoleView implements Observer, View {
 	
 	private Board gameBoard;
