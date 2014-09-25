@@ -1,4 +1,7 @@
+import java.util.Arrays;
 import java.util.Observable;
+
+import org.json.JSONObject;
 
 public class Board extends Observable {
 
@@ -60,6 +63,14 @@ public class Board extends Observable {
 			setChanged();
 			notifyObservers();
 		}
+	}
+	
+	public String getJSON() {
+		JSONObject boardValues = new JSONObject();
+	    for (int row = 0; row < ROWS; ++row) {
+	    	boardValues.put(Integer.toString(row), Arrays.toString(board[row]));
+	    }
+	    return boardValues.toString();
 	}
 	
 	

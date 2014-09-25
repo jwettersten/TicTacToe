@@ -2,12 +2,13 @@ import java.util.Scanner;
 
 public class TicTacToe {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		Scanner consoleUserInput = new Scanner(System.in);
 		
 		Board gameBoard = new Board();
 		Controller gameController = new Controller(gameBoard);
+		LemmaController lemmaController = new LemmaController(gameBoard);
 		View view = new ConsoleView(gameBoard);
 		gameController.setupPreferredView(view);
 		
@@ -24,6 +25,7 @@ public class TicTacToe {
 		
 		gameController.playGame();
 		
+		lemmaController.disconnectLemmaFromNoam();	
 		consoleUserInput.close();
 
 	}

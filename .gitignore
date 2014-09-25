@@ -2,6 +2,7 @@
 /build/
 /bin/
 target/
+/META-INF/
  
 # OS Files #
 .DS_Store
