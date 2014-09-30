@@ -18,80 +18,58 @@ public class ControllerTest {
 	}
 	
 	@Test
-	public void testViewHumanIsWinner() {
+	public void testViewControllerRowColumnPlayerIsWinner() {
+		fillBoardWithMark(Constants.CROSS);
+		
+		Player rowColumPlayer = new Player("Row Column Player", gameBoard, new MoveWithRowColumn());
+		rowColumPlayer.setMark(Constants.CROSS);
+		
+		MockConsoleView mockConsoleView = new MockConsoleView(gameBoard);
 
-		// load up the board with winning human marks
+		Controller gameController = new Controller(gameBoard);
+		gameController.setupPreferredView(mockConsoleView);
+		gameController.checkScore(rowColumPlayer);
+		
+		assertEquals(rowColumPlayer.getName(), mockConsoleView.currentWinner);
+	}
+
+	private void fillBoardWithMark(int playerMark) {
 		for (int row = 0; row < 3; ++row) {
 			for (int col = 0; col < 3; ++col) {
-				gameBoard.setPlayerPosition(row, col, Constants.CROSS);
+				gameBoard.setPlayerPosition(row, col, playerMark);
 			}
 		}
-		
-		// Player
-		Player human = new Player("jw", gameBoard, new MoveWithRowColumn());
-		human.setMark(Constants.CROSS);
-		
-		// View
-		MockView view = new MockView(gameBoard);
-		
-		// Controller
-		Controller controller = new Controller(gameBoard);
-		controller.setupPreferredView(view);
-		controller.checkScore(human);
-		
-		// confirm human is the winner
-		assertEquals(human.getName(), view.currentWinner);
 	}
 	
 	@Test
-	public void testViewCheckScoreComputerIsWinner() {
-
-		// load up the board with winning human marks
-		for (int row = 0; row < 3; ++row) {
-			for (int col = 0; col < 3; ++col) {
-				gameBoard.setPlayerPosition(row, col, Constants.NOUGHT);
-			}
-		}
+	public void testViewControllerComputerIsWinner() {
+		fillBoardWithMark(Constants.NOUGHT);
 		
-		// Player
 		Player computer = new Player("Computer", gameBoard, new MoveWithAIMinimax(gameBoard));
 		computer.setMark(Constants.NOUGHT);
+
+		MockConsoleView mockConsoleView = new MockConsoleView(gameBoard);
+
+		Controller gameController = new Controller(gameBoard);
+		gameController.setupPreferredView(mockConsoleView);
+		gameController.checkScore(computer);
 		
-		// View
-		MockView view = new MockView(gameBoard);
-		
-		// Controller
-		Controller controller = new Controller(gameBoard);
-		controller.setupPreferredView(view);
-		controller.checkScore(computer);
-		
-		// confirm human is the winner
-		assertEquals(computer.getName(), view.currentWinner);
+		assertEquals(computer.getName(), mockConsoleView.currentWinner);
 	}
 	
 	@Test
-	public void testViewCheckScoreTie() {
-
-		// load up the board to a tie
+	public void testViewControllerTieScore() {
 		populateTieBoard();
-		assertTrue(gameBoard.isFull());
 		
-		// Player
-		Player computer = new Player("Computer", gameBoard, new MoveWithAIMinimax(gameBoard));
-		computer.setMark(Constants.NOUGHT);
-		Player human = new Player("jw", gameBoard, new MoveWithRowColumn());
-		human.setMark(Constants.CROSS);
+		Player rowColumPlayer = new Player("Row Column Player", gameBoard, new MoveWithRowColumn());
+		rowColumPlayer.setMark(Constants.CROSS);
+
+		MockConsoleView view = new MockConsoleView(gameBoard);
 		
-		// View
-		MockView view = new MockView(gameBoard);
+		Controller gameController = new Controller(gameBoard);
+		gameController.setupPreferredView(view);
+		gameController.checkScore(rowColumPlayer);
 		
-		// Controller
-		Controller controller = new Controller(gameBoard);
-		controller.setupPreferredView(view);
-		
-		controller.checkScore(human);
-		
-		// check for tie
 		assertTrue(view.isTie);
 	}
 
@@ -108,113 +86,80 @@ public class ControllerTest {
 	}
 	
 	@Test
-	public void testViewCheckScoreHumanPlayerMoves() {
+	public void testViewControllerRowColumnPlayerMoveAttempts() {
 		
-		MockView view = new MockView(gameBoard);
+		MockConsoleView mockConsoleView = new MockConsoleView(gameBoard);
 
-		Controller controller = new Controller(gameBoard);
-		controller.setupPreferredView(view);
+		Controller gameController = new Controller(gameBoard);
+		gameController.setupPreferredView(mockConsoleView);
 		
-		MockMoveBehavior behavior = new MockMoveBehavior();
-		Player human = new Player("jw", gameBoard, behavior);
-		human.setMark(Constants.NOUGHT);
+		MoveWithRowColumn rowColBehaviorCross = new MoveWithRowColumn();
+		Player rowColumnPlayerCross = new Player("Row Column Player", gameBoard, rowColBehaviorCross);
+		rowColumnPlayerCross.setMark(Constants.CROSS);
+		//gameController.setHumanPlayer(rowColumnPlayerCross);
 		
-		int rows[] = new int[9];
-		int cols[] = new int[9];
-		rows[0] = 0; cols[0] = 0;
-		rows[1] = 0; cols[1] = 1;
-		rows[2] = 0; cols[2] = 2;
-		rows[3] = 1; cols[3] = 0;
-		rows[4] = 1; cols[4] = 1;
-		rows[5] = 1; cols[5] = 2;
-		rows[6] = 2; cols[6] = 0;
-		rows[7] = 2; cols[7] = 1;
-		rows[8] = 2; cols[8] = 2;
-		// test each move
-		for (int i=0; i<rows.length; i++) {
-			behavior.row = rows[i];
-			behavior.column = cols[i];
-			
-			human.performMove();
-		}
+		MoveWithRowColumn rowColBehaviorNought = new MoveWithRowColumn();
+		Player rowColumnPlayerNought = new Player("Row Column Player", gameBoard, rowColBehaviorNought);
+		rowColumnPlayerNought.setMark(Constants.NOUGHT);
+		gameController.setComputerPlayer(rowColumnPlayerNought);
 		
-		view.displayGameBoard();
-		controller.checkScore(human);
+		rowColBehaviorCross.setRow(0);
+		rowColBehaviorCross.setColumn(0);
+		gameController.attemptMove(rowColumnPlayerCross);
 		
-		// test setting the position
-		assertEquals(human.getName(), view.currentWinner);
+		rowColBehaviorNought.setRow(1);
+		rowColBehaviorNought.setColumn(1);
+		gameController.attemptMove(rowColumnPlayerNought);
 		
+		assertEquals(rowColumnPlayerCross.getMark(), gameBoard.getCellValueAt(0, 0));
+		assertEquals(rowColumnPlayerNought.getMark(), gameBoard.getCellValueAt(1, 1));
 	}
 	
-	// create simpler scripted MockBehavior - to test expected moves 
-	
-	// mocking out a player will test the integration with controller
-	// and how it handles unexpected behavior from the player - testing dependencies
-	// the controller has on the Player.(as if built controller and not have built the player)
-	
-//	@Test
-//	public void testGamePlay() {
-//		gameBoard = new Board();
-//		
-//		MockView view = new MockView();
-//		view.gameBoard = gameBoard;
-//
-//		Controller controller = new Controller(gameBoard);
-//		controller.setupPreferredView(view);
-//		
-//		Player mockHuman = new MockPlayer("jw", gameBoard);
-//		mockHuman.setMark(Constants.CROSS);
-//		controller.setHumanPlayer(mockHuman);
-//		
-//		Player computer = new AIPlayerMinimax("Computer", gameBoard);
-//		computer.setMark(Constants.NOUGHT);
-//		controller.setComputerPlayer(computer);
-//		controller.playGame();
-//		
-//		view.displayGameBoard();
-//		
-//		// test setting the position
-//		assertEquals(computer.getName(), view.currentWinner);
-//		
-//	}
-	
 	@Test
-	public void testNoamVsMinimaxGamePlay() {
-		gameBoard = new Board();
-		NoamMessageController messageController;
-		
-		MockView view = new MockView(gameBoard);
+	public void testRowColumnPlayerVsMinimaxGamePlay() {
+		MockConsoleView mockConsoleView = new MockConsoleView(gameBoard);
 
-		MockController controller = new MockController(gameBoard);
-		controller.setupPreferredView(view);
+		Controller gameController = new Controller(gameBoard);
+		gameController.setupPreferredView(mockConsoleView);
 		
-		try {
-			messageController = new NoamMessageController(gameBoard, controller, new Presenter(gameBoard));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		
-		Player mockHuman = new Player("jw", gameBoard, new MockHumanMoveBehavior(gameBoard));
-		mockHuman.setMark(Constants.CROSS);
-		controller.setHumanPlayer(mockHuman);
+		Player consoleRowColumnPlayer = new Player("Row ColumnPlayer", gameBoard, new MockHumanMoveBehavior(gameBoard));
+		consoleRowColumnPlayer.setMark(Constants.CROSS);
+		//gameController.setHumanPlayer(consoleRowColumnPlayer);
 		
 		Player computer = new Player("Computer", gameBoard, new MoveWithAIMinimax(gameBoard));
 		computer.setMark(Constants.NOUGHT);
-		controller.setComputerPlayer(computer);
+		gameController.setComputerPlayer(computer);
 		
-		view.displayGameBoard();
-		
-		controller.playGame();
-		
-		// move Scanner from console to view
-		// change Controller to wait for an incoming move - not depend upon console
-		
-		// test setting the position
-		//assertEquals(computer.getName(), view.currentWinner);
+		gameController.attemptMove(consoleRowColumnPlayer);
+		gameController.attemptMove(computer);
+		gameController.attemptMove(consoleRowColumnPlayer);
+		gameController.attemptMove(computer);
+		gameController.attemptMove(consoleRowColumnPlayer);
+		gameController.attemptMove(computer);
 
+		assertEquals(computer.getName(), mockConsoleView.currentWinner);
 	}
-
 	
+	@Test
+	public void testNoamMoveAttempt() {
+		NoamMessageController noamMessageController;
+		
+		MockConsoleView mockConsoleView = new MockConsoleView(gameBoard);
 
+		Controller gameController = new Controller(gameBoard);
+		gameController.setupPreferredView(mockConsoleView);
+		
+		Player computer = new Player("Computer", gameBoard, new MoveWithAIMinimax(gameBoard));
+		computer.setMark(Constants.NOUGHT);
+		gameController.setComputerPlayer(computer);
+		
+		try {
+			noamMessageController = new NoamMessageController(gameBoard, gameController, new Presenter(gameBoard));
+			noamMessageController.parseAndAttemptIncomingMove("1,1," + Constants.CROSS);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+
+		assertEquals(Constants.CROSS, gameBoard.getCellValueAt(0,0));
+	}
 }

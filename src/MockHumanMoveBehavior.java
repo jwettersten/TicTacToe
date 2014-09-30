@@ -19,7 +19,7 @@ public class MockHumanMoveBehavior implements MoveBehavior {
 	@Override
 	// modify interface to pass in board 
 	public int[] move() {
-		return new int[] {row, column};
+		return nextMove(gameBoard);
 	}
 	
 	public int[] nextMove(Board board) {

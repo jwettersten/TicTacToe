@@ -2,8 +2,8 @@ public class Player {
 	
 	private String name;
 	private int mark;
-	MoveBehavior moveBehavior;
-	Board gameBoard;
+	private MoveBehavior moveBehavior;
+	private Board gameBoard;
 	
 	public Player(String name, Board board, MoveBehavior behavior) {
 		this.name = name;
@@ -13,11 +13,15 @@ public class Player {
 	}
 	
 	public String getName() {
-		return this.name;
+		return name;
 	}
 	
 	public int getMark() {
-		return this.mark;
+		return mark;
+	}
+	
+	public MoveBehavior getMoveBehavior() {
+		return moveBehavior;
 	}
 	
 	public void setMark(int newMark) {

@@ -1,62 +1,36 @@
 import java.util.Observable;
 import java.util.Observer;
 
-import lemma.library.Event;
-import lemma.library.EventHandler;
-import lemma.library.Lemma;
-
-public class MockNoamMessageController implements Observer {
-	private Lemma lemma;
+public class MockNoamMessageController extends NoamMessageController implements Observer {
+	private Presenter modelMessageDataProvider;
 	private Board gameBoard;
-	
-	private String currentNoamMessage = "";
-	
-	public MockNoamMessageController(Board board) throws Exception {
-		setupLemma(board);
-		
-		this.gameBoard = board;
-		
-		board.addObserver(this);
+	private Controller gameController;
 
+	public String outboundJSONMessage;
+	
+	public MockNoamMessageController(Board board, Controller controller, Presenter presenter) throws Exception {
+		super(board, controller, presenter);
 	}
 	
-	public void disconnectLemmaFromNoam() {
-		lemma.stop();
+	public void parseAndAttemptIncomingMove(String incomingMove) {
+		String delimiter = "[,]";
+		String[] tokens = incomingMove.split(delimiter);
+		MoveWithRowColumn mvrc = new MoveWithRowColumn();
+		Player noamPlayer = new Player("Noam", gameBoard, mvrc);
+		mvrc.setRow(Integer.parseInt(tokens[0]) - 1);
+		mvrc.setColumn(Integer.parseInt(tokens[1]) - 1);
+		noamPlayer.setMark(Integer.parseInt(tokens[2]));
+		
+		gameController.attemptMove(noamPlayer);
 	}
-
-	private void setupLemma(Board board) throws InterruptedException {
-		
-		lemma = new Lemma(this, "TicTacToeLemma", "TicTacToe");
-		while (!lemma.connected()) {
-			lemma.run();
-	    	lemma.sendEvent("TicTacToeEvent", "noam, want to play a game?");
-		}
-		
+	
+	public void disconnectFromNoam() {
+		NoamMessageGateway.getMessageGateway().stop();
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		try {
-			currentNoamMessage = "GameBoardUpdated";
-			speakToNoam();
-		} catch (InterruptedException e) {
-			System.out.println("Error attempting to send message to noam!");
-		}
-	}
-	
-	public String getMessageSentToNoam() {
-		return currentNoamMessage;
-	}
-
-	private void speakToNoam() throws InterruptedException {
-		
-		while (!lemma.connected())   {
-          lemma.run();
-          lemma.sendEvent("TicTacToeEvent", "GameBoardUpdated");
-          currentNoamMessage = "GameBoardUpdated";
-          Thread.sleep(10);
-		}
-
+		outboundJSONMessage = modelMessageDataProvider.getBoardStateJSON().toString();
 	}
 
 }

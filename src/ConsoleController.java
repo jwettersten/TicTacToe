@@ -12,26 +12,31 @@ public class ConsoleController {
 		gameController = controller;
 		consoleView = view;
 		consolePlayer = player;
-		
+	}
+	
+	public void waitForMove() {
 		consoleThread = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				while (threadIsRunning) {
-					consolePlayer.moveBehavior.setRow(consoleUserInput.nextInt() - 1);
-					consolePlayer.moveBehavior.setColumn(consoleUserInput.nextInt() - 1);
-					gameController.attemptMove(consolePlayer);
+					parseAndAttemptConsoleMove();
 			    	try {
-		                Thread.sleep(100);
+		                Thread.sleep(1000);
 		            } catch (InterruptedException e) {
 		                e.printStackTrace();
 		            }
 				}
 			}
+
+			private void parseAndAttemptConsoleMove() {
+				MoveWithRowColumn mvrc = (MoveWithRowColumn)consolePlayer.getMoveBehavior();
+				mvrc.setRow(consoleUserInput.nextInt() - 1);
+				mvrc.setColumn(consoleUserInput.nextInt() - 1);
+				gameController.attemptMove(consolePlayer);
+			}
 		});
-	}
-	
-	public void waitForMove() {
+		
 		consoleThread.start();
 		consoleView.requestPlayerMove(consolePlayer.getName());
 	}

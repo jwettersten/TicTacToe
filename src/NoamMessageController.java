@@ -19,9 +19,10 @@ public class NoamMessageController implements Observer {
 	public void parseAndAttemptIncomingMove(String incomingMove) {
 		String delimiter = "[,]";
 		String[] tokens = incomingMove.split(delimiter);
-		Player noamPlayer = new Player("Noam", gameBoard, new MoveWithRowColumn());
-		noamPlayer.moveBehavior.setRow(Integer.parseInt(tokens[0]));
-		noamPlayer.moveBehavior.setColumn(Integer.parseInt(tokens[1]));
+		MoveWithRowColumn mvrc = new MoveWithRowColumn();
+		Player noamPlayer = new Player("Noam", gameBoard, mvrc);
+		mvrc.setRow(Integer.parseInt(tokens[0]) - 1);
+		mvrc.setColumn(Integer.parseInt(tokens[1]) - 1);
 		noamPlayer.setMark(Integer.parseInt(tokens[2]));
 		
 		gameController.attemptMove(noamPlayer);

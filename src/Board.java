@@ -1,7 +1,4 @@
-import java.util.Arrays;
 import java.util.Observable;
-
-import org.json.JSONObject;
 
 public class Board extends Observable {
 
@@ -46,9 +43,7 @@ public class Board extends Observable {
 	}
 	
 	public boolean positionIsAvailable(int row, int column) {
-
 		return (positionIsWithinBounds(row, column) && board[row][column] == 0);
-		
 	}
 
 	private boolean positionIsWithinBounds(int row, int column) {
@@ -56,7 +51,6 @@ public class Board extends Observable {
 	}
 	
 	public synchronized void setPlayerPosition(int row, int column, int playerMark) {
-		
 		if (row < ROWS && column < COLUMNS && playerMark >= Constants.UNASSIGNED && playerMark <= Constants.NOUGHT) {
 			board[row][column] = playerMark;
 			
@@ -64,7 +58,6 @@ public class Board extends Observable {
 			notifyObservers();
 		}
 	}
-	
 	
 	/**
 	 * The following 2 winner scoring pattern + hasPlayerWon functions came from the AI example from:
@@ -93,7 +86,4 @@ public class Board extends Observable {
 			0b100100100, 0b010010010, 0b001001001, // cols
 			0b100010001, 0b001010100               // diagonals
 	};
- 
-   
-	
 }

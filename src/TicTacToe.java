@@ -8,34 +8,29 @@ public class TicTacToe {
 		
 		Board gameBoard = new Board();
 		Controller gameController = new Controller(gameBoard);
-		NoamMessageController messageController = new NoamMessageController(gameBoard, gameController, new Presenter(gameBoard));
+		NoamMessageController noamMessageController = new NoamMessageController(gameBoard, gameController, new Presenter(gameBoard));
 		
-		View view = new ConsoleView(gameBoard);
-		gameController.setupPreferredView(view);
+		View consoleView = new ConsoleView(gameBoard);
+		gameController.setupPreferredView(consoleView);
 		
-		view.requestPlayerName();
-		String newPlayerName = consoleUserInput.next(); 
-		Player human = new Player(newPlayerName, gameBoard, new MoveWithRowColumn());
-		human.setMark(Constants.CROSS);
-		gameController.setHumanPlayer(human);
-		ConsoleController consoleController = new ConsoleController(gameController, (ConsoleView)view, human);
-		view.welcomePlayerName(human.getName());
-		consoleController.waitForMove();
+		consoleView.requestPlayerName();
+		String consolePlayerName = consoleUserInput.next();
+		Player consolePlayer = new Player(consolePlayerName, gameBoard, new MoveWithRowColumn());
+		consolePlayer.setMark(Constants.CROSS);
+		ConsoleController consoleController = new ConsoleController(gameController, (ConsoleView)consoleView, consolePlayer);
+		consoleView.welcomePlayerName(consolePlayer.getName());
 		
 		Player computer = new Player("Computer", gameBoard, new MoveWithAIMinimax(gameBoard));
 		computer.setMark(Constants.NOUGHT);
 		gameController.setComputerPlayer(computer);
 		
-		view.displayGameBoard();
-		
+		consoleView.displayGameBoard();
+		consoleController.waitForMove();
 		gameController.playGame();
 		
-		messageController.disconnectFromNoam();	
+		noamMessageController.disconnectFromNoam();	
 		consoleController.stop();
 		consoleUserInput.close();
-
-		// use factory singleton pattern for players
-		
 	}
 
 }

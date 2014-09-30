@@ -1,15 +1,13 @@
 public class Controller {
 	
 	private Board board;
-	private Player human;
 	private Player computer;
 	private View view;
-	private int currentTurn = Constants.CROSS;
+	private int currentPlayerTurn = Constants.CROSS;
 	
 	private boolean gameNotOver = true;
 	
 	public Controller(Board board) {
-
 		this.board = board;
 	}
 	
@@ -18,37 +16,35 @@ public class Controller {
 		view.create();
 	}
 	
-	public void setHumanPlayer(Player newHumanPlayer) {
-		human = newHumanPlayer;
-	}
-	
 	public void setComputerPlayer(Player newComputerPlayer) {
 		computer = newComputerPlayer;
 	}
 	
 	public void playGame() {
-
 		while (gameNotOver) {
-			// wait for next input from whatever player
-			// add threaded sleep
-			if (currentTurn == computer.getMark()) {
+
+			if (isCurrentTurn(computer)) {
 				attemptMove(computer);
 			}
+			
 			try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 		}
-		
+	}
+
+	private boolean isCurrentTurn(Player player) {
+		return currentPlayerTurn == player.getMark();
 	}
 	
 	public void attemptMove(Player player) {
-		if (gameNotOver && player.getMark() == currentTurn) {
+		if (isCurrentTurn(player)) {
 			if (player.performMove()) {
 				
 				checkScore(player);
-				player = swapPlayer(player);
+				changeCurrentPlayer(player);
 	
 			} else {
 	
@@ -69,26 +65,18 @@ public class Controller {
 			
 			view.displayTie();
 			endGame();
-			
 		} 
-
 	}
 	
-	private Player swapPlayer(Player currentPlayer) {
-		if (currentPlayer == computer) {
-		  currentPlayer = human;
-		  view.requestPlayerMove(human.getName());
+	private void changeCurrentPlayer(Player currentPlayer) {
+		if (currentPlayer.getMark() == Constants.CROSS) {
+			currentPlayerTurn = Constants.NOUGHT;
 		} else {
-		  currentPlayer = computer;
+			currentPlayerTurn = Constants.CROSS;
 		}
-
-		currentTurn = currentPlayer.getMark();
-		
-		return currentPlayer;
 	}
 
 	private void endGame() {
 		gameNotOver = false;
 	}
-	
 }

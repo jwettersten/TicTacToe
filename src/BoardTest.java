@@ -1,8 +1,4 @@
 import static org.junit.Assert.*;
-
-import java.util.Arrays;
-
-import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,8 +6,6 @@ import org.junit.Test;
 public class BoardTest {
 	
 	Board board;
-	private static final int ROWS = 3;
-	private static final int COLUMNS = 3;
 
 	@Before
 	public void setUp() throws Exception {
@@ -112,26 +106,4 @@ public class BoardTest {
 	public void raisesExceptionWhenGettingOutOfBounds() {
 		 board.getCellValueAt(3, 3);
 	}
-	
-	@Test
-	public void convertBoardToJSON() {
-		int[][] gameBoard = board.getBoard();
-		
-		for (int row = 0; row < 3; ++row) {
-			for (int col = 0; col < 3; ++col) {
-				gameBoard[row][col] = Constants.CROSS;
-			}
-		}
-	    
-		JSONObject boardValues = new JSONObject();
-	    for (int row = 0; row < ROWS; ++row) {
-	    	//boardValues.put(Integer.toString(row), getSecondDimensionValues(boardValues, gameBoard, row));
-	    	boardValues.put("Row: " + Integer.toString(row), Arrays.toString(gameBoard[row]));
-	    }
-	    
-	    //assertEquals()
-	    System.out.println(boardValues.toString());
-
-	}
-
 }

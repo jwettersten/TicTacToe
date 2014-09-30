@@ -1,13 +1,13 @@
 import java.util.Observable;
 import java.util.Observer;
 
-public class MockView implements Observer, View {
+public class MockConsoleView implements Observer, View {
 	public Board gameBoard;
 	
 	public String currentWinner;
 	public boolean isTie = false;
 	
-	public MockView(Board board) {
+	public MockConsoleView(Board board) {
 		this.gameBoard = board;
 		
 		board.addObserver(this);
