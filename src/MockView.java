@@ -1,13 +1,22 @@
-public class MockView implements View {
+import java.util.Observable;
+import java.util.Observer;
+
+public class MockView implements Observer, View {
 	public Board gameBoard;
 	
 	public String currentWinner;
 	public boolean isTie = false;
 	
+	public MockView(Board board) {
+		this.gameBoard = board;
+		
+		board.addObserver(this);
+	}
+	
 	@Override
 	public void create() {
-		//displayMessage("Welcome to the game of Tic Tac Toe!");
-		//displayGameBoard();
+		displayMessage("Welcome to the game of Tic Tac Toe!");
+		displayGameBoard();
 	}
 
 	@Override
@@ -22,19 +31,24 @@ public class MockView implements View {
 	
 	@Override
 	public void informPlayerMoveIsNotAvailable() {
-		//displayMessage("That move is not available. Try again!");
+		displayMessage("That move is not available. Try again!");
+	}
+	
+	@Override
+	public void informPlayerNotTheirTurn() {
+		displayMessage("Sorry, you need to wait your turn.");
 	}
 	
 	@Override
 	public void displayWinner(String name) {
 		currentWinner = name;
-		//displayMessage(name);
+		displayMessage(name);
 	}
 
 	@Override
 	public void displayTie() {
 		isTie = true;
-		//displayMessage("It's a tie!");
+		displayMessage("It's a tie!");
 	}
 	
 	@Override
@@ -75,5 +89,9 @@ public class MockView implements View {
 			case Constants.CROSS:  		System.out.print(" X "); break;
 			case Constants.NOUGHT:  	System.out.print(" O "); break;
 		}
+	}
+	
+	public void update(Observable obs, Object x) {
+		displayGameBoard();
 	}
 }

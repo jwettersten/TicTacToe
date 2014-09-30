@@ -7,6 +7,8 @@ public interface View {
 	public abstract void requestPlayerMove(String name);
 
 	public abstract void informPlayerMoveIsNotAvailable();
+	
+	public abstract void informPlayerNotTheirTurn();
 
 	public abstract void displayWinner(String name);
 

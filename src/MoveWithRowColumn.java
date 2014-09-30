@@ -1,14 +1,16 @@
-import java.util.Scanner;
-
 public class MoveWithRowColumn implements MoveBehavior {
+	public int row = 0;
+	public int column = 0;
 	
-	private Scanner consoleUserInput = new Scanner(System.in);
+	public void setRow(int rowValue) {
+		this.row = rowValue;
+	}
+	
+	public void setColumn(int colValue) {
+		this.column = colValue;
+	}
 	
 	public int[] move() {
-
-		int row = consoleUserInput.nextInt() - 1; 
-		int column = consoleUserInput.nextInt() - 1;
-		
 		return new int[] {row, column};
 	}
 

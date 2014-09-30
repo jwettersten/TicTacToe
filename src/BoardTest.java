@@ -34,7 +34,6 @@ public class BoardTest {
 
 	@Test
 	public void testNewBoardIsNotFull() {
-		Board board = new Board();
 		
 		assertFalse(board.isFull());
 	}
@@ -133,15 +132,6 @@ public class BoardTest {
 	    //assertEquals()
 	    System.out.println(boardValues.toString());
 
-	}
-
-	private String getSecondDimensionValues(JSONObject boardValues, int[][] gameBoard, int row) {
-		
-		for (int col = 0; col < COLUMNS; ++col) {
-			boardValues.put(Integer.toString(col), Integer.toString(gameBoard[row][col]));
-		}
-		
-		return boardValues.toString();
 	}
 
 }

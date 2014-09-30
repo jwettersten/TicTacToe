@@ -1,5 +1,5 @@
-public class Controller {
-	
+
+public class MockController {
 	private Board board;
 	private Player human;
 	private Player computer;
@@ -8,7 +8,7 @@ public class Controller {
 	
 	private boolean gameNotOver = true;
 	
-	public Controller(Board board) {
+	public MockController(Board board) {
 
 		this.board = board;
 	}
@@ -40,10 +40,34 @@ public class Controller {
                 e.printStackTrace();
             }
 		}
-		
 	}
 	
 	public void attemptMove(Player player) {
+		
+		performMove(player);
+	}
+	
+	public void attemptRowColumnMove(int row, int col, Player requestingPlayer) {
+
+		Player player = human;
+		
+		// transform playerMark into appropriate player type
+		if (requestingPlayer.getMark() == Constants.CROSS) {
+			player = this.human;
+			player.moveBehavior.setRow(row);
+			player.moveBehavior.setColumn(col);
+
+		} else {
+			player = this.computer;
+		}
+		
+		performMove(player);
+	}
+	
+	// need to add logic to control turns
+	// need to support computer to constantly check if it's computers turn
+	private void performMove(Player player) {
+
 		if (gameNotOver && player.getMark() == currentTurn) {
 			if (player.performMove()) {
 				
@@ -71,13 +95,11 @@ public class Controller {
 			endGame();
 			
 		} 
-
 	}
-	
+
 	private Player swapPlayer(Player currentPlayer) {
 		if (currentPlayer == computer) {
 		  currentPlayer = human;
-		  view.requestPlayerMove(human.getName());
 		} else {
 		  currentPlayer = computer;
 		}
@@ -86,9 +108,8 @@ public class Controller {
 		
 		return currentPlayer;
 	}
-
+	
 	private void endGame() {
 		gameNotOver = false;
 	}
-	
 }

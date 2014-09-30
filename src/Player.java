@@ -19,7 +19,7 @@ public class Player {
 	public int getMark() {
 		return this.mark;
 	}
-
+	
 	public void setMark(int newMark) {
 		if (isValidMark(newMark)) {
 			this.mark = newMark;

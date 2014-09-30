@@ -55,22 +55,14 @@ public class Board extends Observable {
 		return row < ROWS && column < COLUMNS;
 	}
 	
-	public void setPlayerPosition(int row, int column, int playerMark) {
+	public synchronized void setPlayerPosition(int row, int column, int playerMark) {
 		
-		if (row < ROWS && column < COLUMNS) {
+		if (row < ROWS && column < COLUMNS && playerMark >= Constants.UNASSIGNED && playerMark <= Constants.NOUGHT) {
 			board[row][column] = playerMark;
 			
 			setChanged();
 			notifyObservers();
 		}
-	}
-	
-	public String getJSON() {
-		JSONObject boardValues = new JSONObject();
-	    for (int row = 0; row < ROWS; ++row) {
-	    	boardValues.put(Integer.toString(row), Arrays.toString(board[row]));
-	    }
-	    return boardValues.toString();
 	}
 	
 	

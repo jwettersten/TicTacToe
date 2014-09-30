@@ -8,10 +8,18 @@ public class MockHumanMoveBehavior implements MoveBehavior {
 		gameBoard = board;
 	}
 	
+	public void setRow(int rowValue) {
+		this.row = rowValue;
+	}
+	
+	public void setColumn(int colValue) {
+		this.column = colValue;
+	}
+	
 	@Override
 	// modify interface to pass in board 
 	public int[] move() {
-		return nextMove(gameBoard);
+		return new int[] {row, column};
 	}
 	
 	public int[] nextMove(Board board) {

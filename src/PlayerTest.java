@@ -18,31 +18,19 @@ public class PlayerTest {
 	}
 
 	@Test
-	public void testPlayer() {
+	public void testRowColumnPlayer() {
 		
 		assertNotNull(new Player("jw", gameBoard, new MoveWithRowColumn()));
 		
 	}
 	
 	@Test
-	public void testCreateHumanPlayerType() {
+	public void testMinimaxPlayer() {
 		
-		Player human = new HumanPlayer("jw", gameBoard);
-		
-		assertEquals("HumanPlayer", human.getClass().getName());
+		assertNotNull(new Player("Computer", gameBoard, new MoveWithAIMinimax(gameBoard)));
 		
 	}
-	
-	@Test
-	public void testCreateComputerPlayerType() {
-		
-		Board gameBoard = new Board();
-		
-		Player computer = new AIPlayerMinimax("Computer", gameBoard);
-		
-		assertEquals("AIPlayerMinimax", computer.getClass().getName());
-		
-	}
+
 	
 	@Test
 	public void testPlayerName() {

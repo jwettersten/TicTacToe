@@ -33,6 +33,11 @@ public class ConsoleView implements Observer, View {
 	}
 	
 	@Override
+	public void informPlayerNotTheirTurn() {
+		displayMessage("Sorry, you need to wait your turn.");
+	}
+	
+	@Override
 	public void displayWinner(String name) {
 		displayMessage(name + " has won!");
 	}
