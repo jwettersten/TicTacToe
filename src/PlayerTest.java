@@ -88,5 +88,4 @@ public class PlayerTest {
 
 		assertFalse(rowColumnPlayer.performMove());
 	}
-
 }

@@ -27,7 +27,5 @@ public class PresenterTest {
 		JSONObject testObject = new JSONObject("{2:[0,0,0],1:[0,0,0],0:[1,0,0]}");
 		
 		assertEquals(testObject.toString(), presenter.getBoardStateJSON().toString());
-		
 	}
-
 }

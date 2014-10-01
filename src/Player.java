@@ -36,6 +36,7 @@ public class Player {
 		return (newMark == Constants.CROSS || newMark == Constants.NOUGHT);	
 	}
 
+	// could use template pattern instead - move to base class
 	public boolean performMove() {
 		
 		int[] result = moveBehavior.move();
@@ -50,7 +51,5 @@ public class Player {
 		} 
 		
 		return false;
-		
 	}
-
 }

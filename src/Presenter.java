@@ -26,5 +26,4 @@ public class Presenter {
 		
 		return new JSONArray(columnValues);
 	}
-
 }

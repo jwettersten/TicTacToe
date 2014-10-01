@@ -96,12 +96,10 @@ public class ControllerTest {
 		MoveWithRowColumn rowColBehaviorCross = new MoveWithRowColumn();
 		Player rowColumnPlayerCross = new Player("Row Column Player", gameBoard, rowColBehaviorCross);
 		rowColumnPlayerCross.setMark(Constants.CROSS);
-		//gameController.setHumanPlayer(rowColumnPlayerCross);
 		
 		MoveWithRowColumn rowColBehaviorNought = new MoveWithRowColumn();
 		Player rowColumnPlayerNought = new Player("Row Column Player", gameBoard, rowColBehaviorNought);
 		rowColumnPlayerNought.setMark(Constants.NOUGHT);
-		gameController.setComputerPlayer(rowColumnPlayerNought);
 		
 		rowColBehaviorCross.setRow(0);
 		rowColBehaviorCross.setColumn(0);
@@ -124,11 +122,9 @@ public class ControllerTest {
 		
 		Player consoleRowColumnPlayer = new Player("Row ColumnPlayer", gameBoard, new MockHumanMoveBehavior(gameBoard));
 		consoleRowColumnPlayer.setMark(Constants.CROSS);
-		//gameController.setHumanPlayer(consoleRowColumnPlayer);
 		
 		Player computer = new Player("Computer", gameBoard, new MoveWithAIMinimax(gameBoard));
 		computer.setMark(Constants.NOUGHT);
-		gameController.setComputerPlayer(computer);
 		
 		gameController.attemptMove(consoleRowColumnPlayer);
 		gameController.attemptMove(computer);
@@ -149,12 +145,11 @@ public class ControllerTest {
 		Controller gameController = new Controller(gameBoard);
 		gameController.setupPreferredView(mockConsoleView);
 		
-		Player computer = new Player("Computer", gameBoard, new MoveWithAIMinimax(gameBoard));
-		computer.setMark(Constants.NOUGHT);
-		gameController.setComputerPlayer(computer);
+		Player noamPlayer = new Player("Noam!", gameBoard, new MoveWithRowColumn());
+		noamPlayer.setMark(Constants.CROSS);
 		
 		try {
-			noamMessageController = new NoamMessageController(gameBoard, gameController, new Presenter(gameBoard));
+			noamMessageController = new NoamMessageController(gameBoard, gameController, new Presenter(gameBoard), noamPlayer);
 			noamMessageController.parseAndAttemptIncomingMove("1,1," + Constants.CROSS);
 		} catch (Exception e) {
 			e.printStackTrace();
