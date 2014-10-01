@@ -21,7 +21,9 @@ public class NoamMessageControllerTest {
 		Board gameBoard = new Board();
 		Controller gameController = new Controller(gameBoard);
 		
-		NoamMessageController noamMessageController = new NoamMessageController(gameBoard, gameController, new Presenter(gameBoard));
+		Player noamPlayer = new Player("Noam!", gameBoard, new MoveWithRowColumn());
+		noamPlayer.setMark(Constants.CROSS);
+		NoamMessageController noamMessageController = new NoamMessageController(gameBoard, gameController, new Presenter(gameBoard), noamPlayer);
 		
 		int row = 1; int col = 1; int playerMark = Constants.CROSS;
 		String moveFromNoam = String.valueOf(row) + "," + String.valueOf(col) + "," + String.valueOf(playerMark);

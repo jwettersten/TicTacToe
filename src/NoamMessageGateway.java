@@ -11,7 +11,6 @@ public class NoamMessageGateway {
 	private Thread lemmaThread;
 	private NoamMessageController messageController;
 	
-	// move out from constructor
 	private NoamMessageGateway() { 
 		setupLemmaAndMessageHandling();
 	}

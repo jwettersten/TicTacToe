@@ -3,15 +3,15 @@ import java.util.Observer;
 
 public class NoamMessageController implements Observer {
 	private Presenter modelMessageDataProvider;
-	private Board gameBoard;
 	private Controller gameController;
+	private Player noamPlayer;
 	private NoamMessageGateway noamGateway;
 	
-	public NoamMessageController(Board board, Controller controller, Presenter presenter) throws Exception {
+	public NoamMessageController(Board board, Controller controller, Presenter presenter, Player player) throws Exception {
 		modelMessageDataProvider = presenter;
-		gameBoard = board;
 		board.addObserver(this);
 		gameController = controller;
+		noamPlayer = player;
 		noamGateway = NoamMessageGateway.getMessageGateway();
 		noamGateway.setMessageController(this);
 	}
@@ -19,8 +19,8 @@ public class NoamMessageController implements Observer {
 	public void parseAndAttemptIncomingMove(String incomingMove) {
 		String delimiter = "[,]";
 		String[] tokens = incomingMove.split(delimiter);
-		MoveWithRowColumn mvrc = new MoveWithRowColumn();
-		Player noamPlayer = new Player("Noam", gameBoard, mvrc);
+
+		MoveWithRowColumn mvrc = (MoveWithRowColumn)noamPlayer.getMoveBehavior();
 		mvrc.setRow(Integer.parseInt(tokens[0]) - 1);
 		mvrc.setColumn(Integer.parseInt(tokens[1]) - 1);
 		noamPlayer.setMark(Integer.parseInt(tokens[2]));
