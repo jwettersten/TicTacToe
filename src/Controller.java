@@ -1,10 +1,9 @@
-public class Controller {
-	
+import java.util.Observable;
+
+public class Controller extends Observable {
 	private Board board;
-	private Player computer;
 	private View view;
 	private int currentPlayerTurn = Constants.CROSS;
-	
 	private boolean gameNotOver = true;
 	
 	public Controller(Board board) {
@@ -16,17 +15,13 @@ public class Controller {
 		view.create();
 	}
 	
-	public void setComputerPlayer(Player newComputerPlayer) {
-		computer = newComputerPlayer;
+	public boolean isCurrentTurn(Player player) {
+		return currentPlayerTurn == player.getMark();
 	}
 	
 	public void playGame() {
 		while (gameNotOver) {
-
-			if (isCurrentTurn(computer)) {
-				attemptMove(computer);
-			}
-			
+			// loop keeping requests open for moves
 			try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -34,13 +29,9 @@ public class Controller {
             }
 		}
 	}
-
-	private boolean isCurrentTurn(Player player) {
-		return currentPlayerTurn == player.getMark();
-	}
 	
-	public void attemptMove(Player player) {
-		if (isCurrentTurn(player)) {
+	public synchronized void attemptMove(Player player) {
+		if (gameNotOver && isCurrentTurn(player)) {
 			if (player.performMove()) {
 				
 				checkScore(player);
@@ -73,6 +64,11 @@ public class Controller {
 			currentPlayerTurn = Constants.NOUGHT;
 		} else {
 			currentPlayerTurn = Constants.CROSS;
+		}
+		
+		if (gameNotOver) {
+			setChanged();
+			notifyObservers();
 		}
 	}
 
