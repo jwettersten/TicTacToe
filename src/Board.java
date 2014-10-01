@@ -15,7 +15,6 @@ public class Board extends Observable {
 	}
 	
 	public int getCellValueAt(int row, int column) throws IndexOutOfBoundsException {
-		
 		return board[row][column];
 	}
 	
@@ -26,7 +25,6 @@ public class Board extends Observable {
 	public int getNumColumns() {
 		return COLUMNS;
 	}
-	
 	
 	public boolean isFull() {
 		boolean returnValue = true;
@@ -50,7 +48,7 @@ public class Board extends Observable {
 		return row < ROWS && column < COLUMNS;
 	}
 	
-	public synchronized void setPlayerPosition(int row, int column, int playerMark) {
+	public void setPlayerPosition(int row, int column, int playerMark) {
 		if (row < ROWS && column < COLUMNS && playerMark >= Constants.UNASSIGNED && playerMark <= Constants.NOUGHT) {
 			board[row][column] = playerMark;
 			
